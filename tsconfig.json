@@ -1,0 +1,41 @@
+{
+	"ts-node": {
+		// Do not forget to `npm i -D tsconfig-paths`
+		"require": ["tsconfig-paths/register"]
+	},
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@atoms/*": ["app/components/atoms/*"],
+			"@components/*": ["app/components/*"],
+			"@contexts/*": ["app/contexts/*"],
+			"@hooks/*": ["app/hooks/*"],
+			"@locales/*": ["app/locales/*"],
+			"@models/*": ["app/models/*"],
+			"@molecules/*": ["app/components/molecules/*"],
+			"@navigation/*": ["app/navigation/*"],
+			"@organisms/*": ["app/components/organisms/*"],
+			"@pages/*": ["app/pages/*"],
+			"@services/*": ["app/services/*"],
+			"@stores/*": ["app/stores/*"],
+			"@theme/*": ["app/theme/*"],
+			"@utils/*": ["app/utils/*"]
+		},
+		"target": "esnext",
+		"lib": ["dom", "dom.iterable", "esnext", "ES6"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noFallthroughCasesInSwitch": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx"
+	},
+	"include": ["app"]
+}
