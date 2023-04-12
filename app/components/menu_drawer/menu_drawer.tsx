@@ -22,7 +22,7 @@ const MenuDrawer = () => {
 			onClose={() => dispatch(toggleMenuDrawer())}
 		>
 			<List>
-				{["Shopping", "Movies", "Anime"].map((text, index) => (
+				{["Shopping", "Movies", "Anime"].map((text) => (
 					<ListItem
 						key={text}
 						onClick={() => navigate(`/${text.toLowerCase()}`)}

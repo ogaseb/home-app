@@ -17,6 +17,8 @@
 		"@types/react-dom": "^18.0.0",
 		"@types/react-redux": "^7.1.25",
 		"@types/react-router-dom": "^5.3.3",
+		"@types/styled-components": "^5.1.26",
+		"normalize.css": "^8.0.1",
 		"react": "^18.2.0",
 		"react-app-rewired": "^2.2.1",
 		"react-dom": "^18.2.0",
@@ -62,6 +64,9 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"resolutions": {
+		"styled-components": "^5"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.57.1",

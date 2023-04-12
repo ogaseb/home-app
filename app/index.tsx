@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
+import "normalize.css";
 import "./index.css";
+import { RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { appStore } from "@stores/app_store/app_store";
 import { router } from "@navigation/app_navigator/app_navigator";
+import { ThemeProvider } from "styled-components";
+import { theme } from "@theme/theme";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,
@@ -13,9 +16,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
 	<React.StrictMode>
-		<Provider store={appStore}>
-			<RouterProvider router={router} />
-		</Provider>
+		<ThemeProvider theme={theme}>
+			<Provider store={appStore}>
+				<RouterProvider router={router} />
+			</Provider>
+		</ThemeProvider>
 	</React.StrictMode>,
 );
 

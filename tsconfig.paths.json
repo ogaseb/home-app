@@ -15,7 +15,8 @@
 			"@services/*": ["app/services/*"],
 			"@stores/*": ["app/stores/*"],
 			"@theme/*": ["app/theme/*"],
-			"@utils/*": ["app/utils/*"]
+			"@utils/*": ["app/utils/*"],
+			"@gfx/*": ["app/gfx/*"]
 		}
 	}
 }

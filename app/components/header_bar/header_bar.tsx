@@ -1,23 +1,22 @@
-import {
-	AppBar,
-	Box,
-	Button,
-	IconButton,
-	Toolbar,
-	Typography,
-} from "@mui/material";
+import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
 import { useAppDispatch } from "@hooks/hooks";
 import { toggleMenuDrawer } from "@stores/ui_store/ui_store";
 import MenuDrawer from "@components/menu_drawer/menu_drawer";
+import styled from "styled-components";
+
+const StyledAppBar = styled(AppBar)`
+	&& {
+		background-color: ${(props) => props.theme.colors.primary};
+	}
+`;
 
 const HeaderBar = () => {
 	const dispatch = useAppDispatch();
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
+		<div>
+			<StyledAppBar position="sticky">
 				<Toolbar>
 					<IconButton
 						size="large"
@@ -34,9 +33,9 @@ const HeaderBar = () => {
 					</Typography>
 					<Button color="inherit">Login</Button>
 				</Toolbar>
-			</AppBar>
+			</StyledAppBar>
 			<MenuDrawer />
-		</Box>
+		</div>
 	);
 };
 
