@@ -1,11 +1,11 @@
 @font-face {
-  font-family: "Roboto";   /*Can be any text*/
-  src: local("Roboto-Medium"),
-    url("./fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+	font-family: "Roboto"; /*Can be any text*/
+	src: local("Roboto-Medium"),
+		url("./fonts/Roboto/Roboto-Medium.ttf") format("truetype");
 }
 
 html {
-  font-family: "Roboto";
-  background-color: #121212;
-  color: white;
+	font-family: "Roboto";
+	background-color: #121212;
+	color: white;
 }
