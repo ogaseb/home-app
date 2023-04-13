@@ -3,22 +3,28 @@ import Input from "@mui/material/Input";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { searchByQuery, showPopular } from "@stores/movies_store/movies_store";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { CircularProgress, Pagination } from "@mui/material";
+import { TMoviesResult } from "@stores/movies_store/movies_store.types";
+import { mediaQuery } from "@theme/theme";
 
 const Wrapper = styled.div`
 	margin: 0 auto;
 	width: 80%;
+
+	${mediaQuery("largeHandset")`
+		width: 100%;
+	`}
 `;
 
 const MoviesListWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 96px);
+	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 144px);
 `;
 
 const MovieListItem = styled.div`
@@ -33,6 +39,7 @@ const HeaderWrapper = styled.div`
 
 const MoviePosterImg = styled.img`
 	height: 240px;
+	display: flex;
 `;
 
 const StyledInput = styled(Input)`
@@ -47,22 +54,48 @@ const StyledInput = styled(Input)`
 	}
 `;
 
+const PaginationWrapper = styled.div`
+	margin-top: 16px;
+	display: flex;
+	justify-content: center;
+
+	.MuiPagination-root > ul > li > button {
+		color: white;
+		border: grey 1px solid;
+		min-width: 32px;
+	}
+
+	.MuiPagination-root > ul > li > div {
+		color: white;
+	}
+
+	${mediaQuery("largeHandset")`
+		.MuiPagination-root > ul > li > button {
+			min-width: unset;
+		}
+	`}
+`;
+
+const StyledPagination = styled(Pagination)``;
+
 interface IFormInput {
 	movieName: string;
 }
 
 const MoviesPage = () => {
-	const location = useLocation();
 	const dispatch = useAppDispatch();
-	const { loading, search } = useAppSelector((state) => state.movies);
+	const {
+		loading,
+		movies: { results, totalPages },
+	} = useAppSelector((state) => state.movies);
 
 	useEffect(() => {
 		console.log(loading);
 		if (loading === "idle") {
 			dispatch(showPopular(1));
 		}
-		console.log(search);
-	}, [loading, search]);
+		console.log(results);
+	}, [loading, results]);
 
 	const schema = yup
 		.object()
@@ -79,9 +112,16 @@ const MoviesPage = () => {
 	});
 
 	const onSubmit: SubmitHandler<IFormInput> = (data) => {
-		console.log(data);
 		dispatch(searchByQuery({ query: data.movieName, page: 1 }));
 	};
+
+	if (loading === "pending") {
+		return (
+			<Wrapper>
+				<CircularProgress />
+			</Wrapper>
+		);
+	}
 
 	return (
 		<Wrapper>
@@ -100,14 +140,22 @@ const MoviesPage = () => {
 				<Button variant="contained">Top Rated</Button>
 			</HeaderWrapper>
 			<MoviesListWrapper>
-				{search.map((title) => (
+				{results.map((title: TMoviesResult) => (
 					<MovieListItem key={title.id}>
 						<MoviePosterImg
-							src={`https://image.tmdb.org/t/p/w500/${title.poster_path}`}
+							src={`https://image.tmdb.org/t/p/w500/${title.posterPath}`}
 						/>
 					</MovieListItem>
 				))}
 			</MoviesListWrapper>
+			<PaginationWrapper>
+				<StyledPagination
+					count={totalPages}
+					variant="outlined"
+					color="primary"
+					shape="rounded"
+				/>
+			</PaginationWrapper>
 		</Wrapper>
 	);
 };
