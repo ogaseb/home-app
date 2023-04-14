@@ -9,6 +9,7 @@ const serializeMoviesResponse = (data: any) => {
 		totalPages: data.total_pages,
 		results: data.results.map((result: TSerializeMoviesResults) => ({
 			title: result.title,
+			originalTitle: result.original_title,
 			id: result.id,
 			posterPath: result.poster_path,
 			releaseDate: result.release_date,

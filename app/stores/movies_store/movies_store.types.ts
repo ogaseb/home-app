@@ -1,5 +1,6 @@
 type TMoviesResult = {
 	title: string;
+	originalTitle: string;
 	id: number;
 	posterPath: string;
 	voteAverage: number;
@@ -15,6 +16,7 @@ type TMoviesResponse = {
 
 type TSerializeMoviesResults = {
 	title: string;
+	original_title: string;
 	id: number;
 	poster_path: string;
 	vote_average: number;
@@ -25,6 +27,7 @@ type TSerializeMoviesResults = {
 type TMoviesStoreState = {
 	movies: TMoviesResponse;
 	loading: "idle" | "pending" | "succeeded" | "failed";
+	currentCategory: "popular" | "top_rated" | "search";
 };
 
 export {

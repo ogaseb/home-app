@@ -11,6 +11,7 @@ const initialState: TMoviesStoreState = {
 		totalPages: 0,
 		results: [],
 	},
+	currentCategory: "popular",
 	loading: "idle",
 };
 
@@ -50,7 +51,7 @@ const showPopular = createAsyncThunk(
 );
 
 const getRecommendationByMovieId = createAsyncThunk(
-	"movies/showPopular",
+	"movies/getRecommendationByMovieId",
 	async (data: { movieId: number; page: number }) => {
 		const { movieId, page } = data;
 
@@ -62,12 +63,25 @@ const getRecommendationByMovieId = createAsyncThunk(
 	},
 );
 
+const getSimilarByMovieId = createAsyncThunk(
+	"movies/getSimilarByMovieId",
+	async (data: { movieId: number; page: number }) => {
+		const { movieId, page } = data;
+
+		const moviesResponse = await axios.get(
+			`${TMDB_API_URL}/movie/${movieId}/similar?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}&language=en-US`,
+		);
+
+		return serializeMoviesResponse(moviesResponse.data);
+	},
+);
+
 export const moviesStore = createSlice({
 	name: "moviesStore",
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(searchByQuery.pending, (state, action) => {
+		builder.addCase(searchByQuery.pending, (state) => {
 			state.loading = "pending";
 		});
 		builder.addCase(
@@ -75,18 +89,20 @@ export const moviesStore = createSlice({
 			(state, action: { payload: TMoviesResponse }) => {
 				state.movies = action.payload;
 				state.loading = "succeeded";
+				state.currentCategory = "search";
 			},
 		);
 
-		builder.addCase(showTopRated.pending, (state, action) => {
+		builder.addCase(showTopRated.pending, (state) => {
 			state.loading = "pending";
 		});
 		builder.addCase(showTopRated.fulfilled, (state, action) => {
 			state.movies.results = action.payload.results;
 			state.loading = "succeeded";
+			state.currentCategory = "top_rated";
 		});
 
-		builder.addCase(showPopular.pending, (state, action) => {
+		builder.addCase(showPopular.pending, (state) => {
 			state.loading = "pending";
 		});
 		builder.addCase(
@@ -94,17 +110,25 @@ export const moviesStore = createSlice({
 			(state, action: { payload: TMoviesResponse }) => {
 				state.movies = action.payload;
 				state.loading = "succeeded";
+				state.currentCategory = "popular";
 			},
 		);
 
-		// builder.addCase(getRecommendationByMovieId.pending, (state, action) => {
-		// 	state.loading = "pending";
-		// });
+		builder.addCase(getRecommendationByMovieId.pending, (state) => {
+			state.loading = "pending";
+		});
+		builder.addCase(getRecommendationByMovieId.fulfilled, (state, action) => {
+			state.movies = action.payload;
+			state.loading = "succeeded";
+		});
 
-		// builder.addCase(getRecommendationByMovieId.fulfilled, (state, action) => {
-		// 	state.movies = action.payload;
-		// 	state.loading = "succeeded";
-		// });
+		builder.addCase(getSimilarByMovieId.pending, (state) => {
+			state.loading = "pending";
+		});
+		builder.addCase(getSimilarByMovieId.fulfilled, (state, action) => {
+			state.movies = action.payload;
+			state.loading = "succeeded";
+		});
 	},
 });
 
@@ -114,6 +138,7 @@ export {
 	showTopRated,
 	serializeMoviesResponse,
 	getRecommendationByMovieId,
+	getSimilarByMovieId,
 };
 
 export default moviesStore.reducer;
