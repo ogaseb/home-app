@@ -51,7 +51,7 @@ const MoviesPagination = ({
 		shows: { totalPages, page },
 	} = useAppSelector((state) => state.shows);
 
-	const handlePageChange = (_event: React.ChangeEvent, page: number) => {
+	const handlePageChange = (_event: any, page: number) => {
 		switch (currentCategory) {
 			case "popular":
 				dispatch(getPopular({ page }));
@@ -97,7 +97,7 @@ const MoviesPagination = ({
 				color="primary"
 				shape="rounded"
 				page={page}
-				onChange={(event, page) => handlePageChange(event, page)}
+				onChange={handlePageChange}
 			/>
 		</PaginationWrapper>
 	);

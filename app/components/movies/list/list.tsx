@@ -9,6 +9,7 @@ import {
 	setLatestShowId,
 } from "@stores/shows_store/shows_store";
 import { useMediaQuery } from "react-responsive";
+import posterNotFound from "@gfx/poster_not_found.png";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -230,7 +231,11 @@ const MoviesList = () => {
 					<MovieListItem key={show.id}>
 						<MoviePosterWrapper>
 							<MoviePosterImg
-								src={`https://image.tmdb.org/t/p/w500/${show.posterPath}`}
+								src={
+									show.posterPath
+										? `https://image.tmdb.org/t/p/w500/${show.posterPath}`
+										: posterNotFound
+								}
 							/>
 						</MoviePosterWrapper>
 						<MovieTextWrapper>

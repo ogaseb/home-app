@@ -1,5 +1,4 @@
 import { TShowsResponse } from "@stores/shows_store/shows_store.types";
-import posterNotFound from "@gfx/poster_not_found.png";
 
 const serializeShowsResponse = (data: {
 	page: number;
@@ -24,7 +23,7 @@ const serializeShowsResponse = (data: {
 			title: result.title || result.name,
 			originalTitle: result.original_title || result.original_name,
 			id: result.id,
-			posterPath: result.poster_path || posterNotFound,
+			posterPath: result.poster_path,
 			releaseDate: result.release_date || result.first_air_date,
 			overview: result.overview,
 			voteAverage: result.vote_average,

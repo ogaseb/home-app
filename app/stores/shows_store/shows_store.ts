@@ -85,7 +85,7 @@ const getRecommendationByShowId = createAsyncThunk(
 			id,
 			page,
 			mediaType,
-		}: { id: number; mediaType: "movie" | "tv"; page: number },
+		}: { id: number; mediaType: "movie" | "tv" | "person"; page: number },
 		{ getState },
 	) => {
 		const { latestShowId } = (getState() as RootState)
@@ -108,7 +108,7 @@ const getSimilarByShowId = createAsyncThunk(
 			id,
 			page,
 			mediaType,
-		}: { id: number; mediaType: "movie" | "tv"; page: number },
+		}: { id: number; mediaType: "movie" | "tv" | "person"; page: number },
 		{ getState },
 	) => {
 		const { latestShowId } = (getState() as RootState)
