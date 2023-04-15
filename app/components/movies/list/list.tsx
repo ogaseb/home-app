@@ -1,14 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
-import { Button, ButtonGroup, CircularProgress, Divider } from "@mui/material";
-import { TMoviesResult } from "@stores/movies_store/movies_store.types";
+import { Button, ButtonGroup, CircularProgress } from "@mui/material";
+import { TShowsResult } from "@stores/shows_store/shows_store.types";
 import { mediaQuery } from "@theme/theme";
 import {
-	getRecommendationByMovieId,
-	getSimilarByMovieId,
-} from "@stores/movies_store/movies_store";
+	getRecommendationByShowId,
+	getSimilarByShowId,
+	setLatestShowId,
+} from "@stores/shows_store/shows_store";
 import { useMediaQuery } from "react-responsive";
-import { useEffect, useRef } from "react";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -16,17 +16,17 @@ const MoviesListWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 168px);
+	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 132px);
 
 	border: 1px solid rgba(25, 118, 210, 0.5);
 	box-shadow: -2px 6px 13px -7px rgba(25, 118, 210, 0.5);
 
-	& > div:nth-child(odd) {
-		background-color: #121212;
-	}
-
 	& > div:nth-child(even) {
 		background-color: #171717;
+	}
+
+	@media only screen and (max-width: 480px) {
+		height: calc(100vh - ${(props) => props.theme.appBarHeight} - 186px);
 	}
 `;
 
@@ -49,6 +49,7 @@ const MovieListItemHeader = styled.div`
 	position: sticky;
 	top: 0px;
 	z-index: 1;
+	background-color: #212121;
 
 	& > div {
 		justify-content: center;
@@ -136,11 +137,14 @@ const ButtonWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex: 1;
+	flex: 2;
 
 	${mediaQuery("largeHandset")`
-    font-size: 10px;
     margin: 12px 0 0 0;
+
+		& .MuiButton-root {
+			font-size: 10px;
+		}
 	`}
 `;
 
@@ -175,12 +179,8 @@ const ErrorText = styled.div`
 	`}
 `;
 
-const MoviesList = ({ handlePageChange }: { handlePageChange: any }) => {
+const MoviesList = () => {
 	const dispatch = useAppDispatch();
-	const {
-		movies: { page },
-	} = useAppSelector((state) => state.movies);
-
 	const isMobile = useMediaQuery({
 		query: "(max-width: 480px)",
 	});
@@ -201,8 +201,8 @@ const MoviesList = ({ handlePageChange }: { handlePageChange: any }) => {
 
 	const {
 		loading,
-		movies: { results },
-	} = useAppSelector((state) => state.movies);
+		shows: { results },
+	} = useAppSelector((state) => state.shows);
 
 	if (loading === "succeeded" && !results.length) {
 		return (
@@ -210,12 +210,6 @@ const MoviesList = ({ handlePageChange }: { handlePageChange: any }) => {
 				<FlexCenterWrapper>
 					<ErrorWrapper>
 						<ErrorText>There is no movies to show</ErrorText>
-						<Button
-							variant="outlined"
-							onClick={(event) => handlePageChange(event, page)}
-						>
-							Go Back
-						</Button>
 					</ErrorWrapper>
 				</FlexCenterWrapper>
 			</MoviesListWrapper>
@@ -231,30 +225,30 @@ const MoviesList = ({ handlePageChange }: { handlePageChange: any }) => {
 				<MovieReleaseDate>Release Date</MovieReleaseDate>
 				<ButtonWrapper>Action</ButtonWrapper>
 			</MovieListItemHeader>
-			{loading !== "pending" ? (
-				results.map((movie: TMoviesResult) => (
-					<MovieListItem key={movie.id}>
+			{loading !== "pending" && results.length ? (
+				results.map((show: TShowsResult) => (
+					<MovieListItem key={show.id}>
 						<MoviePosterWrapper>
 							<MoviePosterImg
-								src={`https://image.tmdb.org/t/p/w500/${movie.posterPath}`}
+								src={`https://image.tmdb.org/t/p/w500/${show.posterPath}`}
 							/>
 						</MoviePosterWrapper>
 						<MovieTextWrapper>
-							<MovieTitle>{movie.title}</MovieTitle>
-							<MovieOriginalTitle>{movie.originalTitle}</MovieOriginalTitle>
-							<MovieDescription>{movie.overview}</MovieDescription>
+							<MovieTitle>{show.title}</MovieTitle>
+							<MovieOriginalTitle>
+								{show.originalTitle} | type: {show.mediaType}
+							</MovieOriginalTitle>
+							<MovieDescription>{show.overview}</MovieDescription>
 						</MovieTextWrapper>
 						<MovieRatingWrapper>
 							<CircularProgress
 								variant="determinate"
-								value={movie.voteAverage * 10}
-								color={voteRateCircleColor(movie.voteAverage)}
+								value={show.voteAverage * 10}
+								color={voteRateCircleColor(show.voteAverage)}
 							/>
-							<MoviesRatingText>
-								{movie.voteAverage.toFixed(1)}
-							</MoviesRatingText>
+							<MoviesRatingText>{show.voteAverage.toFixed(1)}</MoviesRatingText>
 						</MovieRatingWrapper>
-						<MovieReleaseDate>{movie.releaseDate}</MovieReleaseDate>
+						<MovieReleaseDate>{show.releaseDate}</MovieReleaseDate>
 						<ButtonWrapper>
 							<ButtonGroup
 								orientation={isMobile ? "horizontal" : "vertical"}
@@ -263,28 +257,36 @@ const MoviesList = ({ handlePageChange }: { handlePageChange: any }) => {
 								<Button>Add</Button>
 								<Button>Watched</Button>
 								<Button
-									onClick={() =>
+									onClick={() => {
+										dispatch(setLatestShowId(show.id));
 										dispatch(
-											getRecommendationByMovieId({
-												movieId: movie.id,
+											getRecommendationByShowId({
+												id: show.id,
+												mediaType: show.mediaType,
 												page: 1,
 											}),
-										)
-									}
+										);
+									}}
 								>
-									Recommend
+									{show.mediaType === "movie"
+										? "Recommend Movies"
+										: "Recommend Shows"}
 								</Button>
 								<Button
-									onClick={() =>
+									onClick={() => {
+										dispatch(setLatestShowId(show.id));
 										dispatch(
-											getSimilarByMovieId({
-												movieId: movie.id,
+											getSimilarByShowId({
+												id: show.id,
+												mediaType: show.mediaType,
 												page: 1,
 											}),
-										)
-									}
+										);
+									}}
 								>
-									Similar
+									{show.mediaType === "movie"
+										? "Similar Movies"
+										: "Similar Shows"}
 								</Button>
 							</ButtonGroup>
 						</ButtonWrapper>

@@ -1,10 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import { useForm } from "react-hook-form";
-import {
-	showPopular,
-	searchByQuery,
-	showTopRated,
-} from "@stores/movies_store/movies_store";
+import { getPopular } from "@stores/shows_store/shows_store";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +9,7 @@ import { mediaQuery } from "@theme/theme";
 import { MoviesHeader } from "@components/movies/header/header";
 import { MoviesList } from "@components/movies/list/list";
 import { MoviesPagination } from "@components/movies/pagination/pagination";
-import { TFormInput } from "./movies_page.types";
+import { TFormInput } from "./shows_page.types";
 
 const Wrapper = styled.div`
 	margin: 0 auto;
@@ -28,17 +24,16 @@ const Wrapper = styled.div`
 	`}
 `;
 
-const MoviesPage = () => {
+const ShowsPage = () => {
 	const dispatch = useAppDispatch();
 	const {
-		currentCategory,
 		loading,
-		movies: { results, page },
-	} = useAppSelector((state) => state.movies);
+		shows: { results, page },
+	} = useAppSelector((state) => state.shows);
 
 	useEffect(() => {
 		if (loading === "idle") {
-			dispatch(showPopular(page));
+			dispatch(getPopular({ page }));
 		}
 	}, [loading, results]);
 
@@ -48,20 +43,6 @@ const MoviesPage = () => {
 			movieName: yup.string().required(),
 		})
 		.required();
-
-	const handlePageChange = (_event: React.ChangeEvent, page: number) => {
-		switch (currentCategory) {
-			case "popular":
-				dispatch(showPopular(page));
-				break;
-			case "top_rated":
-				dispatch(showTopRated(page));
-				break;
-			case "search":
-				dispatch(searchByQuery({ query: getValues("movieName"), page }));
-				break;
-		}
-	};
 
 	const { control, handleSubmit, getValues } = useForm<TFormInput>({
 		defaultValues: {
@@ -73,10 +54,10 @@ const MoviesPage = () => {
 	return (
 		<Wrapper>
 			<MoviesHeader control={control} handleSubmit={handleSubmit} />
-			<MoviesList handlePageChange={handlePageChange} />
+			<MoviesList />
 			<MoviesPagination getValues={getValues} />
 		</Wrapper>
 	);
 };
 
-export default MoviesPage;
+export default ShowsPage;

@@ -3,7 +3,7 @@ import { RootPage } from "@pages/root_page/root_page";
 import { MainPage } from "@pages/main_page/main_page";
 
 import TestComponents from "@pages/shopping_list_page/shopping_list_page";
-import MoviesPage from "@pages/movies_page/movies_page";
+import ShowsPage from "@pages/shows_page/shows_page";
 
 const router = createBrowserRouter([
 	{
@@ -19,8 +19,8 @@ const router = createBrowserRouter([
 				element: <TestComponents />,
 			},
 			{
-				path: "/movies",
-				element: <MoviesPage />,
+				path: "/shows",
+				element: <ShowsPage />,
 			},
 			{
 				path: "/anime",

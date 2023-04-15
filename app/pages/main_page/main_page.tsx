@@ -1,7 +1,6 @@
 import { Grid, Paper } from "@mui/material";
 import styled from "styled-components";
 import shoppingImg from "@gfx/1.jpg";
-import animeImg from "@gfx/2.jpg";
 import moviesImg from "@gfx/3.png";
 import othersImg from "@gfx/4.png";
 import { useNavigate } from "react-router-dom";
@@ -45,10 +44,9 @@ const Text = styled.span`
 `;
 
 const mainPanelsArray = [
-	{ name: "Shopping", image: shoppingImg },
-	{ name: "Anime", image: animeImg },
-	{ name: "Movies", image: moviesImg },
-	{ name: "Others", image: othersImg },
+	{ path: "shopping", image: shoppingImg, display: "Shopping" },
+	{ path: "others", image: othersImg, display: "Others" },
+	{ path: "shows", image: moviesImg, display: "Movies, Shows & Anime" },
 ];
 
 const MainPage = () => {
@@ -62,11 +60,9 @@ const MainPage = () => {
 		<Wrapper container columnSpacing={{ xs: 1, md: 2 }} rowSpacing={2}>
 			{mainPanelsArray.map((item, index) => (
 				<Grid item md={6} xs={12} key={index}>
-					<StyledPaper
-						onClick={() => handlePanelClick(item.name.toLowerCase())}
-					>
+					<StyledPaper onClick={() => handlePanelClick(item.path)}>
 						<BackgroundImage image={item.image}>
-							<Text>{item.name}</Text>
+							<Text>{item.display}</Text>
 						</BackgroundImage>
 					</StyledPaper>
 				</Grid>

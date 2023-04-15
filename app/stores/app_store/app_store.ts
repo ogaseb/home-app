@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import moviesStore from "@stores/movies_store/movies_store";
+import showsStore from "@stores/shows_store/shows_store";
 import uiStore from "@stores/ui_store/ui_store";
 
 export const appStore = configureStore({
 	reducer: {
 		ui: uiStore,
-		movies: moviesStore,
+		shows: showsStore,
 	},
 });
 

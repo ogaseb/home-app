@@ -1,14 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import {
+	getNowPlaying,
+	getPopular,
+	getRecommendationByShowId,
+	getSimilarByShowId,
+	getTopRated,
+	getUpcoming,
 	searchByQuery,
-	showPopular,
-	showTopRated,
-} from "@stores/movies_store/movies_store";
+} from "@stores/shows_store/shows_store";
 import styled from "styled-components";
 import { Pagination } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
 import { UseFormGetValues } from "react-hook-form";
-import { TFormInput } from "@pages/movies_page/movies_page.types";
+import { TFormInput } from "@pages/shows_page/shows_page.types";
 
 const PaginationWrapper = styled.div`
 	margin-top: 16px;
@@ -42,16 +46,42 @@ const MoviesPagination = ({
 	const dispatch = useAppDispatch();
 	const {
 		currentCategory,
-		movies: { totalPages, page },
-	} = useAppSelector((state) => state.movies);
+		latestShowId,
+		currentMediaType,
+		shows: { totalPages, page },
+	} = useAppSelector((state) => state.shows);
 
 	const handlePageChange = (_event: React.ChangeEvent, page: number) => {
 		switch (currentCategory) {
 			case "popular":
-				dispatch(showPopular(page));
+				dispatch(getPopular({ page }));
 				break;
 			case "top_rated":
-				dispatch(showTopRated(page));
+				dispatch(getTopRated({ page }));
+				break;
+			case "upcoming":
+				dispatch(getUpcoming({ page }));
+				break;
+			case "now_playing":
+				dispatch(getNowPlaying({ page }));
+				break;
+			case "recommendation":
+				dispatch(
+					getRecommendationByShowId({
+						id: latestShowId,
+						mediaType: currentMediaType,
+						page: page,
+					}),
+				);
+				break;
+			case "similar":
+				dispatch(
+					getSimilarByShowId({
+						id: latestShowId,
+						mediaType: currentMediaType,
+						page: page,
+					}),
+				);
 				break;
 			case "search":
 				dispatch(searchByQuery({ query: getValues("movieName"), page }));
