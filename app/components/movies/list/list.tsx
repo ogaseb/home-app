@@ -259,9 +259,10 @@ const MoviesList = () => {
 								orientation={isMobile ? "horizontal" : "vertical"}
 								size="small"
 							>
-								<Button>Add</Button>
-								<Button>Watched</Button>
+								<Button disableRipple>Add</Button>
+								<Button disableRipple>Watched</Button>
 								<Button
+									disableRipple
 									onClick={() => {
 										dispatch(setLatestShowId(show.id));
 										dispatch(
@@ -278,6 +279,7 @@ const MoviesList = () => {
 										: "Recommend Shows"}
 								</Button>
 								<Button
+									disableRipple
 									onClick={() => {
 										dispatch(setLatestShowId(show.id));
 										dispatch(
