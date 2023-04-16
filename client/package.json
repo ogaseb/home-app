@@ -40,19 +40,12 @@
 		"start": "react-app-rewired start",
 		"build": "react-app-rewired build",
 		"test": "react-app-rewired test",
-		"eject": "react-scripts eject",
-		"configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""
+		"eject": "react-scripts eject"
 	},
 	"husky": {
 		"hooks": {
 			"pre-commit": "lint-staged"
 		}
-	},
-	"lint-staged": {
-		"**/*.{ts,tsx,js,jsx,json}": [
-			"eslint . --fix",
-			"prettier --write ."
-		]
 	},
 	"eslintConfig": {
 		"extends": [
