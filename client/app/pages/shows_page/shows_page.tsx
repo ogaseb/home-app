@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import { useForm } from "react-hook-form";
-import { getPopular } from "@stores/shows_store/shows_store";
+import { getPopular } from "@stores/tmdb_shows_store/tmdb_shows_store";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -27,15 +27,15 @@ const Wrapper = styled.div`
 const ShowsPage = () => {
 	const dispatch = useAppDispatch();
 	const {
-		loading,
+		loading: showsLoading,
 		shows: { results, page },
-	} = useAppSelector((state) => state.shows);
+	} = useAppSelector((state) => state.tmdbShowsStore);
 
 	useEffect(() => {
-		if (loading === "idle") {
+		if (showsLoading === "idle") {
 			dispatch(getPopular({ page }));
 		}
-	}, [loading, results]);
+	}, [showsLoading, results]);
 
 	const schema = yup
 		.object()

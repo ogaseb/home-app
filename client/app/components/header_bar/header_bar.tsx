@@ -4,7 +4,11 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import { checkIfLoggedIn, removeUser } from "@stores/user_store/user_store";
+import {
+	checkIfLoggedIn,
+	getUserById,
+	logOut,
+} from "@stores/user_store/user_store";
 
 const StyledAppBar = styled(AppBar)`
 	&& {
@@ -18,9 +22,21 @@ const HeaderBar = () => {
 	const dispatch = useAppDispatch();
 	const isLoggedIn = useAppSelector(checkIfLoggedIn);
 
+	const { user } = useAppSelector((state) => state.userStore);
+
+	const handleClick = async () => {
+		try {
+			if (user) {
+				dispatch(getUserById({ id: user.id }));
+			}
+		} catch (e) {
+			/* empty */
+		}
+	};
+
 	const handleLogout = async () => {
 		try {
-			dispatch(removeUser());
+			dispatch(logOut());
 			googleLogout();
 		} catch (e) {
 			/* empty */
@@ -45,11 +61,12 @@ const HeaderBar = () => {
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 						Furry Hideout App
 					</Typography>
-					<Typography
-						variant="h6"
-						component="div"
-						sx={{ flexGrow: 1 }}
-					></Typography>
+					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+						{user?.nickname}
+					</Typography>
+					<Button color="inherit" onClick={handleClick}>
+						GET USER
+					</Button>
 					{isLoggedIn && (
 						<Button color="inherit" onClick={handleLogout}>
 							Logout

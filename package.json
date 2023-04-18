@@ -6,9 +6,10 @@
   "author": "ProPanek <oga.seb@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "server": "npm start --prefix server",
+    "server": "npm run start:dev --prefix server",
     "client": "npm start --prefix client",
-    "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""
+    "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
+    "start": "concurrently \"yarn server\" \"yarn client\""
   },
   "husky": {
     "hooks": {
@@ -26,5 +27,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
     "prettier": "^2.8.7"
+  },
+  "dependencies": {
+    "concurrently": "^8.0.1"
   }
 }

@@ -3,12 +3,19 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { User } from "@prisma/client";
 import { JwtService } from "@nestjs/jwt";
 
+const allowedEmails = process.env.ALLOWED_EMAILS;
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async login(params: { email: string; name: string; nickname: string }) {
     const { email, name, nickname } = params;
+
+    if (!allowedEmails.includes(email)) {
+      throw new UnauthorizedException(
+        "Missing required property: someProperty",
+      );
+    }
 
     let user: User;
     user = await this.prisma.user.findUnique({

@@ -7,7 +7,7 @@ import {
 	getTopRated,
 	getUpcoming,
 	searchByQuery,
-} from "@stores/shows_store/shows_store";
+} from "@stores/tmdb_shows_store/tmdb_shows_store";
 import styled from "styled-components";
 import { Pagination } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
@@ -49,7 +49,7 @@ const MoviesPagination = ({
 		latestShowId,
 		currentMediaType,
 		shows: { totalPages, page },
-	} = useAppSelector((state) => state.showsStore);
+	} = useAppSelector((state) => state.tmdbShowsStore);
 
 	const handlePageChange = (_event: any, page: number) => {
 		switch (currentCategory) {

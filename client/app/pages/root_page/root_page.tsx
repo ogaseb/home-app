@@ -1,6 +1,6 @@
 import { HeaderBar } from "@components/header_bar/header_bar";
 import { useAppDispatch } from "@hooks/hooks";
-import { setUser } from "@stores/user_store/user_store";
+import { signIn } from "@stores/user_store/user_store";
 import axios from "axios";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -16,13 +16,16 @@ const RootPage = () => {
 	useEffect(() => {
 		const accessToken = localStorage.getItem("user");
 
-		axios.defaults.headers.common["Authorization"] = accessToken;
+		axios.defaults.headers.common[
+			"Authorization"
+		] = `Bearer ${accessToken?.replace(/"/g, "")}`;
 
 		if (accessToken) {
-			dispatch(setUser(JSON.parse(accessToken)));
+			dispatch(signIn(JSON.parse(accessToken)));
 			navigate("/");
 		}
 	}, []);
+
 	return (
 		<>
 			<HeaderBar />

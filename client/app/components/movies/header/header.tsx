@@ -15,7 +15,7 @@ import {
 	getUpcoming,
 	getNowPlaying,
 	changeCurrentMediaType,
-} from "@stores/shows_store/shows_store";
+} from "@stores/tmdb_shows_store/tmdb_shows_store";
 import { TFormInput } from "@pages/shows_page/shows_page.types";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
@@ -124,7 +124,7 @@ const MoviesHeader = ({
 }) => {
 	const dispatch = useAppDispatch();
 	const { currentCategory, currentMediaType } = useAppSelector(
-		(state) => state.showsStore,
+		(state) => state.tmdbShowsStore,
 	);
 
 	const onSubmit: SubmitHandler<TFormInput> = (data) => {

@@ -3,13 +3,14 @@ import {
 	createAsyncThunk,
 	createSelector,
 	createSlice,
+	isAnyOf,
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import jwt from "jwt-decode";
 
 type TUserStoreState = {
-	user?: {
-		id: string;
+	user: {
+		id: number;
 		name?: string;
 		email?: string;
 		nickname?: string;
@@ -41,10 +42,10 @@ const getUserById = createAsyncThunk(
 	"user/getUsers",
 	async ({ id }: { id: number }) => {
 		const {
-			data: { access_token },
-		} = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}/login`);
+			data: { user },
+		} = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}/details`);
 
-		return access_token;
+		return user;
 	},
 );
 
@@ -52,20 +53,17 @@ export const userStore = createSlice({
 	name: "userStore",
 	initialState,
 	reducers: {
-		setUser: (state, action: PayloadAction<string>) => {
+		signIn: (state, action: PayloadAction<string>) => {
 			const { name, email, nickname, id } = jwt(action.payload) as any;
 			state.user = { name, email, nickname, id };
 			state.accessToken = action.payload;
 		},
-		removeUser: (state) => {
+		logOut: (state) => {
 			state.user = null;
 			localStorage.removeItem("user");
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(userLogin.pending, (state) => {
-			state.loading = "pending";
-		});
 		builder.addCase(userLogin.fulfilled, (state, action) => {
 			const user = jwt(action.payload) as any;
 			const { name, email, nickname, id } = user;
@@ -73,17 +71,39 @@ export const userStore = createSlice({
 			state.accessToken = action.payload;
 			state.loading = "succeeded";
 			localStorage.setItem("user", JSON.stringify(action.payload));
+			axios.defaults.headers.common[
+				"Authorization"
+			] = `Bearer ${action.payload?.replace(/"/g, "")}`;
 		});
+
+		builder.addCase(getUserById.fulfilled, (state, action) => {
+			console.log(action.payload);
+		});
+
+		builder.addMatcher(
+			isAnyOf(userLogin.pending, getUserById.pending),
+			(state) => {
+				state.loading = "pending";
+			},
+		);
+		builder.addMatcher(
+			isAnyOf(userLogin.rejected, getUserById.pending),
+			(state) => {
+				state.loading = "failed";
+			},
+		);
 	},
 });
 
-export const { setUser, removeUser } = userStore.actions;
+export const { signIn, logOut } = userStore.actions;
 
-const user = (state: any) => state.userStore.user;
+const user = (state: { userStore: { user: TUserStoreState["user"] } }) =>
+	state.userStore.user;
+
 export const checkIfLoggedIn = createSelector([user], (user) => {
 	return !!user;
 });
 
 export default userStore.reducer;
 
-export { userLogin };
+export { userLogin, getUserById };

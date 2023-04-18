@@ -1,15 +1,16 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
 import { Button, ButtonGroup, CircularProgress } from "@mui/material";
-import { TShowsResult } from "@stores/shows_store/shows_store.types";
+import { TShowsResult } from "@stores/tmdb_shows_store/tmdb_shows_store.types";
 import { mediaQuery } from "@theme/theme";
 import {
 	getRecommendationByShowId,
 	getSimilarByShowId,
 	setLatestShowId,
-} from "@stores/shows_store/shows_store";
+} from "@stores/tmdb_shows_store/tmdb_shows_store";
 import { useMediaQuery } from "react-responsive";
 import posterNotFound from "@gfx/poster_not_found.png";
+import { addUserShow } from "@stores/user_shows_store/user_shows_store";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -203,7 +204,7 @@ const MoviesList = () => {
 	const {
 		loading,
 		shows: { results },
-	} = useAppSelector((state) => state.showsStore);
+	} = useAppSelector((state) => state.tmdbShowsStore);
 
 	if (loading === "succeeded" && !results.length) {
 		return (
@@ -259,7 +260,12 @@ const MoviesList = () => {
 								orientation={isMobile ? "horizontal" : "vertical"}
 								size="small"
 							>
-								<Button disableRipple>Add</Button>
+								<Button
+									disableRipple
+									onClick={() => dispatch(addUserShow({ show }))}
+								>
+									Add
+								</Button>
 								<Button disableRipple>Watched</Button>
 								<Button
 									disableRipple

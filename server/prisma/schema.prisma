@@ -22,12 +22,14 @@ model Shows {
   id            Int     @id @default(autoincrement())
   title         String
   originalTitle String
-  showId        Int
+  showId        Int     @unique
   posterPath    String?
   voteAverage   Float
   releaseDate   String
   overview      String
   mediaType     String
+  isAdded       Boolean @default(false)
+  isWatched     Boolean @default(false)
   user          User?   @relation(fields: [userId], references: [id])
   userId        Int?
 }
