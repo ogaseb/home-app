@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TUiStoreState } from "./ui_store.types";
 
-interface IuiStoreState {
-	menuDrawerState: boolean;
-}
-
-const initialState: IuiStoreState = {
+const initialState: TUiStoreState = {
 	menuDrawerState: false,
 };
 

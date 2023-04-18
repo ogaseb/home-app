@@ -203,7 +203,7 @@ const MoviesList = () => {
 	const {
 		loading,
 		shows: { results },
-	} = useAppSelector((state) => state.shows);
+	} = useAppSelector((state) => state.showsStore);
 
 	if (loading === "succeeded" && !results.length) {
 		return (

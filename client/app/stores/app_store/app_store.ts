@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import showsStore from "@stores/shows_store/shows_store";
 import uiStore from "@stores/ui_store/ui_store";
+import userStore from "@stores/user_store/user_store";
 
 export const appStore = configureStore({
 	reducer: {
-		ui: uiStore,
-		shows: showsStore,
+		userStore: userStore,
+		uiStore: uiStore,
+		showsStore: showsStore,
 	},
 });
 

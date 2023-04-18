@@ -124,7 +124,7 @@ const MoviesHeader = ({
 }) => {
 	const dispatch = useAppDispatch();
 	const { currentCategory, currentMediaType } = useAppSelector(
-		(state) => state.shows,
+		(state) => state.showsStore,
 	);
 
 	const onSubmit: SubmitHandler<TFormInput> = (data) => {

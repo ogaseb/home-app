@@ -49,7 +49,7 @@ const MoviesPagination = ({
 		latestShowId,
 		currentMediaType,
 		shows: { totalPages, page },
-	} = useAppSelector((state) => state.shows);
+	} = useAppSelector((state) => state.showsStore);
 
 	const handlePageChange = (_event: any, page: number) => {
 		switch (currentCategory) {
