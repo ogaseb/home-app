@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import { useForm } from "react-hook-form";
-import { getPopular } from "@stores/tmdb_shows_store/tmdb_shows_store";
+import { getPopular } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,7 +29,7 @@ const ShowsPage = () => {
 	const {
 		loading: showsLoading,
 		shows: { results, page },
-	} = useAppSelector((state) => state.tmdbShowsStore);
+	} = useAppSelector((state) => state.showsStore.tmdbShows);
 
 	useEffect(() => {
 		if (showsLoading === "idle") {

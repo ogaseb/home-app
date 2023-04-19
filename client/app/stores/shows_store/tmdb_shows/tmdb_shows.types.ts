@@ -1,3 +1,5 @@
+import { TShowsResult } from "../user_shows/user_shows.types";
+
 type TShowsResult = {
 	title: string;
 	originalTitle: string;
@@ -6,6 +8,19 @@ type TShowsResult = {
 	voteAverage: number;
 	releaseDate: string;
 	overview: string;
+	mediaType: "movie" | "tv" | "person";
+};
+
+type TShowsResultUser = {
+	title: string;
+	originalTitle: string;
+	id: number;
+	posterPath: string;
+	voteAverage: number;
+	releaseDate: string;
+	overview: string;
+	isAdded: boolean;
+	isWatched: boolean;
 	mediaType: "movie" | "tv" | "person";
 };
 
@@ -46,6 +61,7 @@ type TShowsStoreState = {
 
 export {
 	TShowsResult,
+	TShowsResultUser,
 	TShowsResponse,
 	TSerializeShowsResults,
 	TShowsStoreState,

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TShowsResult, TShowsStoreState } from "./user_shows_store.types";
+import { TShowsResult, TShowsStoreState } from "./user_shows.types";
 
 const initialState: TShowsStoreState = {
 	shows: {
@@ -12,7 +12,7 @@ const initialState: TShowsStoreState = {
 };
 
 const addUserShow = createAsyncThunk(
-	"user/getAllUserShows",
+	"user/addUserShow",
 	async ({ show }: { show: TShowsResult }) => {
 		const {
 			data: { show: showResponse },
@@ -33,7 +33,7 @@ const getAllUserShows = createAsyncThunk("user/getAllUserShows", async () => {
 });
 
 export const userShowsStore = createSlice({
-	name: "tmdbShowsStore",
+	name: "userShows",
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {

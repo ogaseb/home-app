@@ -5,7 +5,7 @@ import {
 	isAnyOf,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TShowsResponse, TShowsStoreState } from "./tmdb_shows_store.types";
+import { TShowsResponse, TShowsStoreState } from "./tmdb_shows.types";
 import { serializeShowsResponse } from "@utils/shows/serialize_shows_response";
 import { RootState } from "@stores/app_store/app_store";
 
@@ -58,8 +58,8 @@ const searchByQuery = createAsyncThunk(
 const getTopRated = createAsyncThunk(
 	"tmdb/getTopRated",
 	async ({ page }: { page: number }, { getState }) => {
-		const { currentMediaType } = (getState() as RootState)
-			.tmdbShowsStore as TShowsStoreState;
+		const { currentMediaType } = (getState() as RootState).showsStore
+			.tmdbShows as TShowsStoreState;
 		const endpoint = `${TMDB_API_URL}/${currentMediaType}/top_rated?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}`;
 		const data = await fetchMovies(endpoint);
 
@@ -70,8 +70,8 @@ const getTopRated = createAsyncThunk(
 const getPopular = createAsyncThunk(
 	"tmdb/getPopular",
 	async ({ page }: { page: number }, { getState }) => {
-		const { currentMediaType } = (getState() as RootState)
-			.tmdbShowsStore as TShowsStoreState;
+		const { currentMediaType } = (getState() as RootState).showsStore
+			.tmdbShows as TShowsStoreState;
 		const endpoint = `${TMDB_API_URL}/${currentMediaType}/popular?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}&language=en-US`;
 		const data = await fetchMovies(endpoint);
 		return addMediaTypeToResults(data, currentMediaType);
@@ -88,8 +88,8 @@ const getRecommendationByShowId = createAsyncThunk(
 		}: { id: number; mediaType: "movie" | "tv" | "person"; page: number },
 		{ getState },
 	) => {
-		const { latestShowId } = (getState() as RootState)
-			.tmdbShowsStore as TShowsStoreState;
+		const { latestShowId } = (getState() as RootState).showsStore
+			.tmdbShows as TShowsStoreState;
 
 		const endpoint = `${TMDB_API_URL}/${mediaType}/${
 			id || latestShowId
@@ -111,8 +111,8 @@ const getSimilarByShowId = createAsyncThunk(
 		}: { id: number; mediaType: "movie" | "tv" | "person"; page: number },
 		{ getState },
 	) => {
-		const { latestShowId } = (getState() as RootState)
-			.tmdbShowsStore as TShowsStoreState;
+		const { latestShowId } = (getState() as RootState).showsStore
+			.tmdbShows as TShowsStoreState;
 
 		const endpoint = `${TMDB_API_URL}/${mediaType}/${
 			id || latestShowId
@@ -127,8 +127,8 @@ const getSimilarByShowId = createAsyncThunk(
 const getUpcoming = createAsyncThunk(
 	"tmdb/getUpcoming",
 	async ({ page }: { page: number }, { getState }) => {
-		const { currentMediaType } = (getState() as RootState)
-			.tmdbShowsStore as TShowsStoreState;
+		const { currentMediaType } = (getState() as RootState).showsStore
+			.tmdbShows as TShowsStoreState;
 		const endpoint = `${TMDB_API_URL}/${currentMediaType}/${
 			currentMediaType === "movie" ? "upcoming" : "airing_today"
 		}?api_key=${
@@ -142,8 +142,8 @@ const getUpcoming = createAsyncThunk(
 const getNowPlaying = createAsyncThunk(
 	"tmdb/getNowPlaying",
 	async ({ page }: { page: number }, { getState }) => {
-		const { currentMediaType } = (getState() as RootState)
-			.tmdbShowsStore as TShowsStoreState;
+		const { currentMediaType } = (getState() as RootState).showsStore
+			.tmdbShows as TShowsStoreState;
 		const endpoint = `${TMDB_API_URL}/${currentMediaType}/${
 			currentMediaType === "movie" ? "now_playing" : "on_the_air"
 		}?api_key=${
@@ -155,7 +155,7 @@ const getNowPlaying = createAsyncThunk(
 );
 
 export const tmdbShowsStore = createSlice({
-	name: "tmdbShowsStore",
+	name: "tmdbShows",
 	initialState,
 	reducers: {
 		changeCurrentMediaType: (state, action: PayloadAction<"movie" | "tv">) => {

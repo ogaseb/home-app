@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import tmdbShowsStore from "@stores/tmdb_shows_store/tmdb_shows_store";
+import showsStore from "@stores/shows_store/shows_store";
 import uiStore from "@stores/ui_store/ui_store";
 import userStore from "@stores/user_store/user_store";
 
@@ -7,7 +7,7 @@ export const appStore = configureStore({
 	reducer: {
 		userStore: userStore,
 		uiStore: uiStore,
-		tmdbShowsStore: tmdbShowsStore,
+		showsStore: showsStore,
 	},
 });
 
