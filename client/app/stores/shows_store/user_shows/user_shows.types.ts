@@ -1,4 +1,4 @@
-type TShowsResult = {
+type TShowsResultUser = {
 	title: string;
 	originalTitle: string;
 	id: number;
@@ -6,37 +6,20 @@ type TShowsResult = {
 	voteAverage: number;
 	releaseDate: string;
 	overview: string;
+	isWatched: boolean;
+	isAdded: boolean;
+	showId: number;
 	mediaType: "movie" | "tv" | "person";
 };
 
-type TShowsResponse = {
-	page: number;
-	totalPages: number;
-	results: TShowsResult[];
+type TShowsResponseUser = {
+	results: TShowsResultUser[];
 };
 
-type TSerializeShowsResults = {
-	title?: string;
-	original_title?: string;
-	name?: string;
-	original_name?: string;
-	id: number;
-	poster_path: string;
-	vote_average: number;
-	release_date?: string;
-	first_air_date?: string;
-	overview: string;
-	media_type: "movie" | "tv" | "person";
-};
-
-type TShowsStoreState = {
-	shows: TShowsResponse;
+type TShowsStoreStateUser = {
+	shows: TShowsResponseUser;
+	searchShows: TShowsResponseUser[];
 	loading: "idle" | "pending" | "succeeded" | "failed";
 };
 
-export {
-	TShowsResult,
-	TShowsResponse,
-	TSerializeShowsResults,
-	TShowsStoreState,
-};
+export { TShowsResultUser, TShowsResponseUser, TShowsStoreStateUser };

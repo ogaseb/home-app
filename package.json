@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "server": "npm run start:dev --prefix server",
-    "client": "npm start --prefix client",
+    "client": "sudo PORT=80 npm start --prefix client",
     "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
     "start": "concurrently \"yarn server\" \"yarn client\""
   },

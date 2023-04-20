@@ -1,33 +1,20 @@
-import { TShowsResult } from "../user_shows/user_shows.types";
-
-type TShowsResult = {
+type TShowsResultTmdb = {
 	title: string;
 	originalTitle: string;
-	id: number;
+	showId: number;
 	posterPath: string;
 	voteAverage: number;
 	releaseDate: string;
 	overview: string;
-	mediaType: "movie" | "tv" | "person";
-};
-
-type TShowsResultUser = {
-	title: string;
-	originalTitle: string;
-	id: number;
-	posterPath: string;
-	voteAverage: number;
-	releaseDate: string;
-	overview: string;
-	isAdded: boolean;
-	isWatched: boolean;
+	isAdded?: boolean;
+	isWatched?: boolean;
 	mediaType: "movie" | "tv" | "person";
 };
 
 type TShowsResponse = {
 	page: number;
 	totalPages: number;
-	results: TShowsResult[];
+	results: TShowsResultTmdb[];
 };
 
 type TSerializeShowsResults = {
@@ -49,6 +36,7 @@ type TShowsStoreState = {
 	loading: "idle" | "pending" | "succeeded" | "failed";
 	currentMediaType: "movie" | "tv";
 	latestShowId: number;
+	lastSearchedMovie: string;
 	currentCategory:
 		| "popular"
 		| "top_rated"
@@ -60,8 +48,7 @@ type TShowsStoreState = {
 };
 
 export {
-	TShowsResult,
-	TShowsResultUser,
+	TShowsResultTmdb,
 	TShowsResponse,
 	TSerializeShowsResults,
 	TShowsStoreState,

@@ -1,15 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import { useForm } from "react-hook-form";
 import { getPopular } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { mediaQuery } from "@theme/theme";
 import { MoviesHeader } from "@components/movies/header/header";
 import { MoviesList } from "@components/movies/list/list";
 import { MoviesPagination } from "@components/movies/pagination/pagination";
-import { TFormInput } from "./shows_page.types";
+import { getAllUserShows } from "@stores/shows_store/user_shows/user_shows";
 
 const Wrapper = styled.div`
 	margin: 0 auto;
@@ -30,32 +27,21 @@ const ShowsPage = () => {
 		loading: showsLoading,
 		shows: { results, page },
 	} = useAppSelector((state) => state.showsStore.tmdbShows);
+	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
 	useEffect(() => {
+		dispatch(getAllUserShows());
+
 		if (showsLoading === "idle") {
 			dispatch(getPopular({ page }));
 		}
 	}, [showsLoading, results]);
 
-	const schema = yup
-		.object()
-		.shape({
-			movieName: yup.string().required(),
-		})
-		.required();
-
-	const { control, handleSubmit, getValues } = useForm<TFormInput>({
-		defaultValues: {
-			movieName: "",
-		},
-		resolver: yupResolver(schema),
-	});
-
 	return (
 		<Wrapper>
-			<MoviesHeader control={control} handleSubmit={handleSubmit} />
+			<MoviesHeader />
 			<MoviesList />
-			<MoviesPagination getValues={getValues} />
+			{whichShowsResultsToShow === "tmdb" && <MoviesPagination />}
 		</Wrapper>
 	);
 };

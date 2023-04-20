@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@hooks/hooks";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { showAlert } from "@stores/ui_store/ui_store";
 import { userLogin } from "@stores/user_store/user_store";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -24,9 +25,14 @@ const LoginPage = () => {
 					onSuccess={async (credentialResponse) => {
 						try {
 							await dispatch(userLogin({ credentialResponse }));
+							dispatch(
+								showAlert({ message: "Login Success", severity: "success" }),
+							);
 							navigate("/");
 						} catch (e) {
-							/* empty */
+							dispatch(
+								showAlert({ message: "Login Failed:", severity: "error" }),
+							);
 						}
 					}}
 					onError={() => console.log("Login Failed")}

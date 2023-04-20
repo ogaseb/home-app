@@ -1,16 +1,15 @@
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
-import { Button, ButtonGroup, CircularProgress } from "@mui/material";
-import { TShowsResult } from "@stores/shows_store/tmdb_shows/tmdb_shows.types";
 import { mediaQuery } from "@theme/theme";
-import {
-	getRecommendationByShowId,
-	getSimilarByShowId,
-	setLatestShowId,
-} from "@stores/shows_store/tmdb_shows/tmdb_shows";
-import { useMediaQuery } from "react-responsive";
-import posterNotFound from "@gfx/poster_not_found.png";
-import { addUserShow } from "@stores/shows_store/user_shows/user_shows";
+import { mergeShowsFromUserToTmdb } from "@stores/shows_store/shows_store";
+import { ProgressSpinner } from "@components/progress/progress";
+import { MoviesListActionButtons } from "./action_buttons/action_buttons";
+import { MoviesListHeader } from "./header/header";
+import { MoviesListError } from "./error/error";
+import { addedUserResults } from "@stores/shows_store/user_shows/user_shows";
+import { MoviesListRating } from "./rating/rating";
+import { MoviesListPoster } from "./poster/poster";
+import { useMemo } from "react";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -44,44 +43,6 @@ const MovieListItem = styled.div`
 	`}
 `;
 
-const MovieListItemHeader = styled.div`
-	height: 32px;
-	padding: 8px 0;
-	display: flex;
-	position: sticky;
-	top: 0px;
-	z-index: 1;
-	background-color: #212121;
-
-	& > div {
-		justify-content: center;
-		flex-direction: row;
-	}
-
-	${mediaQuery("largeHandset")`
-		display: none;
-	`}
-`;
-
-const MoviePosterWrapper = styled.div`
-	display: flex;
-	flex: 1.5;
-	justify-content: center;
-	align-items: center;
-	margin-left: 8px;
-
-	${mediaQuery("largeHandset")`
-    height: unset; 
-	`}
-`;
-const MoviePosterImg = styled.img`
-	height: 240px;
-
-	${mediaQuery("largeHandset")`
-		height: 200px;
-	`}
-`;
-
 const MovieTextWrapper = styled.div`
 	display: flex;
 	flex: 5;
@@ -106,24 +67,6 @@ const MovieDescription = styled.div`
 	margin: 20px 8px 0 8px;
 `;
 
-const MovieRatingWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 1;
-	position: relative;
-
-	${mediaQuery("largeHandset")`
-		display: none;
-	`}
-`;
-const MoviesRatingText = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-`;
-
 const MovieReleaseDate = styled.div`
 	display: flex;
 	justify-content: center;
@@ -135,180 +78,81 @@ const MovieReleaseDate = styled.div`
 	`}
 `;
 
-const ButtonWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 2;
-
-	${mediaQuery("largeHandset")`
-    margin: 12px 0 0 0;
-
-		& .MuiButton-root {
-			font-size: 10px;
-		}
-	`}
-`;
-
-const FlexCenterWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	width: 100%;
-`;
-
 const MovieOriginalTitle = styled.div`
 	color: gray;
 	font-size: 16px;
 	margin: 0 8px;
 `;
 
-const ErrorWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 90%;
-`;
-
-const ErrorText = styled.div`
-	color: white;
-	font-size: 36px;
-	text-align: center;
-	margin-bottom: 8px;
-
-	${mediaQuery("largeHandset")`
-    font-size: 24px;
-	`}
-`;
-
 const MoviesList = () => {
-	const dispatch = useAppDispatch();
-	const isMobile = useMediaQuery({
-		query: "(max-width: 480px)",
-	});
+	const { loading: tmdbLoading } = useAppSelector(
+		(state) => state.showsStore.tmdbShows,
+	);
+	const { searchShows } = useAppSelector((state) => state.showsStore.userShows);
+	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
-	const voteRateCircleColor = (voteAverage: number) => {
-		const percentage = voteAverage * 10;
-		switch (true) {
-			case percentage <= 30:
-				return "error";
-			case percentage <= 50:
-				return "warning";
-			case percentage <= 70:
-				return "info";
-			default:
-				return "success";
-		}
-	};
+	const resultsUser = useAppSelector(addedUserResults);
+	const resultsTmdb = useAppSelector(mergeShowsFromUserToTmdb);
 
-	const {
-		loading,
-		shows: { results },
-	} = useAppSelector((state) => state.showsStore.tmdbShows);
-
-	if (loading === "succeeded" && !results.length) {
-		return (
-			<MoviesListWrapper>
-				<FlexCenterWrapper>
-					<ErrorWrapper>
-						<ErrorText>There is no movies to show</ErrorText>
-					</ErrorWrapper>
-				</FlexCenterWrapper>
-			</MoviesListWrapper>
-		);
+	if (
+		whichShowsResultsToShow === "tmdb" &&
+		tmdbLoading === "succeeded" &&
+		!resultsTmdb.length
+	) {
+		return <MoviesListError />;
 	}
+
+	if (whichShowsResultsToShow === "user" && !resultsUser.length) {
+		return <MoviesListError />;
+	}
+
+	const movies = useMemo(() => {
+		if (searchShows.length) {
+			return searchShows;
+		}
+		if (whichShowsResultsToShow === "tmdb") {
+			return resultsTmdb;
+		}
+		if (whichShowsResultsToShow === "user") {
+			return resultsUser;
+		}
+
+		return resultsTmdb;
+	}, [resultsTmdb, resultsTmdb, searchShows, whichShowsResultsToShow]);
 
 	return (
 		<MoviesListWrapper>
-			<MovieListItemHeader>
-				<MoviePosterWrapper>Poster</MoviePosterWrapper>
-				<MovieTextWrapper>Overview</MovieTextWrapper>
-				<MovieRatingWrapper>Rating</MovieRatingWrapper>
-				<MovieReleaseDate>Release Date</MovieReleaseDate>
-				<ButtonWrapper>Action</ButtonWrapper>
-			</MovieListItemHeader>
-			{loading !== "pending" && results.length ? (
-				results.map((show: TShowsResult) => (
-					<MovieListItem key={show.id}>
-						<MoviePosterWrapper>
-							<MoviePosterImg
-								src={
-									show.posterPath
-										? `https://image.tmdb.org/t/p/w500/${show.posterPath}`
-										: posterNotFound
-								}
-							/>
-						</MoviePosterWrapper>
-						<MovieTextWrapper>
-							<MovieTitle>{show.title}</MovieTitle>
-							<MovieOriginalTitle>
-								{show.originalTitle} | type: {show.mediaType}
-							</MovieOriginalTitle>
-							<MovieDescription>{show.overview}</MovieDescription>
-						</MovieTextWrapper>
-						<MovieRatingWrapper>
-							<CircularProgress
-								variant="determinate"
-								value={show.voteAverage * 10}
-								color={voteRateCircleColor(show.voteAverage)}
-							/>
-							<MoviesRatingText>{show.voteAverage.toFixed(1)}</MoviesRatingText>
-						</MovieRatingWrapper>
-						<MovieReleaseDate>{show.releaseDate}</MovieReleaseDate>
-						<ButtonWrapper>
-							<ButtonGroup
-								orientation={isMobile ? "horizontal" : "vertical"}
-								size="small"
-							>
-								<Button
-									disableRipple
-									onClick={() => dispatch(addUserShow({ show }))}
-								>
-									Add
-								</Button>
-								<Button disableRipple>Watched</Button>
-								<Button
-									disableRipple
-									onClick={() => {
-										dispatch(setLatestShowId(show.id));
-										dispatch(
-											getRecommendationByShowId({
-												id: show.id,
-												mediaType: show.mediaType,
-												page: 1,
-											}),
-										);
-									}}
-								>
-									{show.mediaType === "movie"
-										? "Recommend Movies"
-										: "Recommend Shows"}
-								</Button>
-								<Button
-									disableRipple
-									onClick={() => {
-										dispatch(setLatestShowId(show.id));
-										dispatch(
-											getSimilarByShowId({
-												id: show.id,
-												mediaType: show.mediaType,
-												page: 1,
-											}),
-										);
-									}}
-								>
-									{show.mediaType === "movie"
-										? "Similar Movies"
-										: "Similar Shows"}
-								</Button>
-							</ButtonGroup>
-						</ButtonWrapper>
-					</MovieListItem>
-				))
+			<MoviesListHeader />
+			{tmdbLoading !== "pending" && movies.length ? (
+				movies.map((show: any) => {
+					const {
+						id,
+						posterPath,
+						title,
+						originalTitle,
+						mediaType,
+						overview,
+						releaseDate,
+						voteAverage,
+					} = show;
+					return (
+						<MovieListItem key={id}>
+							<MoviesListPoster posterPath={posterPath} />
+							<MovieTextWrapper>
+								<MovieTitle>{title}</MovieTitle>
+								<MovieOriginalTitle>
+									{originalTitle} | type: {mediaType}
+								</MovieOriginalTitle>
+								<MovieDescription>{overview}</MovieDescription>
+							</MovieTextWrapper>
+							<MoviesListRating voteAverage={voteAverage} />
+							<MovieReleaseDate>{releaseDate}</MovieReleaseDate>
+							<MoviesListActionButtons show={show} />
+						</MovieListItem>
+					);
+				})
 			) : (
-				<FlexCenterWrapper>
-					<CircularProgress />
-				</FlexCenterWrapper>
+				<ProgressSpinner />
 			)}
 		</MoviesListWrapper>
 	);

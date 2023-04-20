@@ -1,4 +1,4 @@
-import { TShowsResponse } from "@stores/shows_store/shows_store.types";
+import { TShowsResponse } from "@stores/shows_store/tmdb_shows/tmdb_shows.types";
 
 const serializeShowsResponse = (data: {
 	page: number;
@@ -22,7 +22,7 @@ const serializeShowsResponse = (data: {
 		.map((result) => ({
 			title: result.title || result.name,
 			originalTitle: result.original_title || result.original_name,
-			id: result.id,
+			showId: result.id,
 			posterPath: result.poster_path,
 			releaseDate: result.release_date || result.first_air_date,
 			overview: result.overview,

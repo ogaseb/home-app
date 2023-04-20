@@ -1,59 +1,29 @@
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import {
-	Controller,
-	SubmitHandler,
-	Control,
-	UseFormHandleSubmit,
-} from "react-hook-form";
-import {
-	searchByQuery,
 	getPopular,
 	getTopRated,
 	getUpcoming,
 	getNowPlaying,
 	changeCurrentMediaType,
 } from "@stores/shows_store/tmdb_shows/tmdb_shows";
-import { TFormInput } from "@pages/shows_page/shows_page.types";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
 import { useMediaQuery } from "react-responsive";
+import {
+	showTmdbShowsResults,
+	showUserShowsResults,
+} from "@stores/ui_store/ui_store";
+import { MoviesHeaderSearch } from "./search/search";
+import { setSearchShows } from "@stores/shows_store/user_shows/user_shows";
 
 const HeaderWrapper = styled.div`
 	margin: 8px 0px;
 	display: flex;
-	flex-direction: row-reverse;
-
-	& :nth-child(2) {
-		justify-content: center;
-	}
+	flex-direction: row;
 
 	${mediaQuery("largeHandset")`
 		flex-wrap: wrap;
-	
-		& :nth-child(2) {
-			justify-content: center;
-		}
-	`}
-`;
-
-const StyledForm = styled.form`
-	display: flex;
-	width: 100%;
-	align-items: center;
-	justify-content: end;
-
-	${mediaQuery("largeHandset")`
-		order: 3;
-
-		& > div {
-	    flex-wrap: wrap;
-		  margin-right: 16px;
-		  flex: 1;
-      justify-content: space-between;
-	  }
 	`}
 `;
 
@@ -63,7 +33,8 @@ const ButtonGroupWrapper = styled.div`
 	align-items: center;
 
 	${mediaQuery("largeHandset")`
-		justify-content: center;
+		justify-content: start;
+		margin-bottom: 4px;
 
 		& .MuiToggleButtonGroup-root > button {
 			font-size: 12px;
@@ -71,19 +42,20 @@ const ButtonGroupWrapper = styled.div`
 	`}
 `;
 
-const StyledInput = styled(TextField)`
-	&& {
-		background-color: rgba(25, 118, 210, 0.04);
-		border-radius: 4px;
-		color: white;
-		margin-right: 16px;
+const ButtonGroupWrapperCategory = styled(ButtonGroupWrapper)`
+	justify-content: center;
+	${mediaQuery("largeHandset")`
+		flex: 50%;
+		justify-content: start;
+	`}
+`;
 
-		.MuiOutlinedInput-root {
-			color: white;
-			height: 32px;
-			border: 1px solid rgba(25, 118, 210, 0.5);
-		}
-	}
+const ButtonGroupWrapperResults = styled(ButtonGroupWrapper)`
+	justify-content: center;
+	${mediaQuery("largeHandset")`
+		flex: 50%;
+		justify-content: start;
+	`}
 `;
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
@@ -93,7 +65,8 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
 			border: 1px solid rgba(25, 118, 210, 0.5);
 			border-radius: 4px;
 			height: 32px;
-			line-height: 32px;
+			line-height: 12px;
+			font-size: 12px;
 			transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
 				box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
 				border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
@@ -108,28 +81,31 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
 			border-left: 1px solid #1976d2;
 		}
 
+		.MuiToggleButtonGroup-grouped:not(
+				:first-of-type
+			).Mui-disabled.Mui-selected {
+			border-left: 1px solid rgba(122, 122, 122, 0.5);
+		}
+
 		.Mui-selected {
 			border: 1px solid #1976d2;
 			background-color: rgb(33, 33, 33);
 		}
+
+		.Mui-disabled {
+			border: 1px solid rgba(122, 122, 122, 0.5);
+			color: rgba(122, 122, 122, 0.5);
+		}
 	}
 `;
 
-const MoviesHeader = ({
-	control,
-	handleSubmit,
-}: {
-	control: Control<TFormInput>;
-	handleSubmit: UseFormHandleSubmit<TFormInput>;
-}) => {
+const MoviesHeader = () => {
 	const dispatch = useAppDispatch();
 	const { currentCategory, currentMediaType } = useAppSelector(
 		(state) => state.showsStore.tmdbShows,
 	);
 
-	const onSubmit: SubmitHandler<TFormInput> = (data) => {
-		dispatch(searchByQuery({ query: data.movieName, page: 1 }));
-	};
+	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
 	const onCategoryChange = (
 		_event: React.MouseEvent<HTMLElement>,
@@ -178,40 +154,9 @@ const MoviesHeader = ({
 
 	return (
 		<HeaderWrapper>
-			<StyledForm onSubmit={handleSubmit(onSubmit)}>
-				<Controller
-					name="movieName"
-					control={control}
-					render={({ field }) => (
-						<StyledInput size="small" variant="outlined" {...field} />
-					)}
-				/>
-				<Button type="submit" variant="outlined" size="small">
-					Search
-				</Button>
-			</StyledForm>
 			<ButtonGroupWrapper>
 				<StyledToggleButtonGroup
-					value={currentMediaType}
-					exclusive
-					size={isMobile ? "small" : "medium"}
-				>
-					<ToggleButton
-						value="movie"
-						onClick={(event, value) => onSectionChange(event, value)}
-					>
-						Movies
-					</ToggleButton>
-					<ToggleButton
-						value="tv"
-						onClick={(event, value) => onSectionChange(event, value)}
-					>
-						Anime/Tv
-					</ToggleButton>
-				</StyledToggleButtonGroup>
-			</ButtonGroupWrapper>
-			<ButtonGroupWrapper>
-				<StyledToggleButtonGroup
+					disabled={whichShowsResultsToShow === "user"}
 					value={currentCategory}
 					exclusive
 					size={isMobile ? "small" : "medium"}
@@ -242,6 +187,53 @@ const MoviesHeader = ({
 					</ToggleButton>
 				</StyledToggleButtonGroup>
 			</ButtonGroupWrapper>
+			<ButtonGroupWrapperCategory>
+				<StyledToggleButtonGroup
+					value={currentMediaType}
+					exclusive
+					size={isMobile ? "small" : "medium"}
+				>
+					<ToggleButton
+						value="movie"
+						onClick={(event, value) => onSectionChange(event, value)}
+					>
+						Movies
+					</ToggleButton>
+					<ToggleButton
+						value="tv"
+						onClick={(event, value) => onSectionChange(event, value)}
+					>
+						Anime/Tv
+					</ToggleButton>
+				</StyledToggleButtonGroup>
+			</ButtonGroupWrapperCategory>
+			<ButtonGroupWrapperResults>
+				<StyledToggleButtonGroup
+					value={whichShowsResultsToShow}
+					exclusive
+					size={isMobile ? "small" : "medium"}
+				>
+					<ToggleButton
+						value="tmdb"
+						onClick={() => {
+							dispatch(showTmdbShowsResults());
+							dispatch(setSearchShows([]));
+						}}
+					>
+						TMDB
+					</ToggleButton>
+					<ToggleButton
+						value="user"
+						onClick={() => {
+							dispatch(showUserShowsResults());
+							dispatch(setSearchShows([]));
+						}}
+					>
+						User
+					</ToggleButton>
+				</StyledToggleButtonGroup>
+			</ButtonGroupWrapperResults>
+			<MoviesHeaderSearch />
 		</HeaderWrapper>
 	);
 };

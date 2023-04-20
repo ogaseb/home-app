@@ -11,8 +11,6 @@ import {
 import styled from "styled-components";
 import { Pagination } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
-import { UseFormGetValues } from "react-hook-form";
-import { TFormInput } from "@pages/shows_page/shows_page.types";
 
 const PaginationWrapper = styled.div`
 	margin-top: 16px;
@@ -38,16 +36,13 @@ const PaginationWrapper = styled.div`
 
 const StyledPagination = styled(Pagination)``;
 
-const MoviesPagination = ({
-	getValues,
-}: {
-	getValues: UseFormGetValues<TFormInput>;
-}) => {
+const MoviesPagination = () => {
 	const dispatch = useAppDispatch();
 	const {
 		currentCategory,
 		latestShowId,
 		currentMediaType,
+		lastSearchedMovie,
 		shows: { totalPages, page },
 	} = useAppSelector((state) => state.showsStore.tmdbShows);
 
@@ -84,7 +79,7 @@ const MoviesPagination = ({
 				);
 				break;
 			case "search":
-				dispatch(searchByQuery({ query: getValues("movieName"), page }));
+				dispatch(searchByQuery({ query: lastSearchedMovie, page }));
 				break;
 		}
 	};

@@ -18,7 +18,7 @@ export class ShowsController {
   async login(): Promise<any> {
     const data = await this.showsService.getAllShows();
     return {
-      data,
+      shows: data,
       message: "success",
     };
   }

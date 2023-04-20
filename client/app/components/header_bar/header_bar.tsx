@@ -4,15 +4,18 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import {
-	checkIfLoggedIn,
-	getUserById,
-	logOut,
-} from "@stores/user_store/user_store";
+import { checkIfLoggedIn, logOut } from "@stores/user_store/user_store";
+import { showAlert } from "@stores/ui_store/ui_store";
 
 const StyledAppBar = styled(AppBar)`
 	&& {
 		background-color: ${(props) => props.theme.colors.primary};
+		height: 32px;
+
+		.MuiToolbar-root {
+			min-height: 32px;
+			font-size: 14px;
+		}
 	}
 `;
 
@@ -24,24 +27,12 @@ const HeaderBar = () => {
 
 	const { user } = useAppSelector((state) => state.userStore);
 
-	const handleClick = async () => {
-		try {
-			if (user) {
-				dispatch(getUserById({ id: user.id }));
-			}
-		} catch (e) {
-			/* empty */
-		}
+	const handleLogout = async () => {
+		dispatch(logOut());
+		dispatch(showAlert({ message: "See you soon!", severity: "success" }));
+		googleLogout();
 	};
 
-	const handleLogout = async () => {
-		try {
-			dispatch(logOut());
-			googleLogout();
-		} catch (e) {
-			/* empty */
-		}
-	};
 	return (
 		<div>
 			<StyledAppBar position="sticky">
@@ -64,9 +55,6 @@ const HeaderBar = () => {
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 						{user?.nickname}
 					</Typography>
-					<Button color="inherit" onClick={handleClick}>
-						GET USER
-					</Button>
 					{isLoggedIn && (
 						<Button color="inherit" onClick={handleLogout}>
 							Logout

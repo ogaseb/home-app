@@ -87,7 +87,7 @@ export const userStore = createSlice({
 			},
 		);
 		builder.addMatcher(
-			isAnyOf(userLogin.rejected, getUserById.pending),
+			isAnyOf(userLogin.rejected, getUserById.rejected),
 			(state) => {
 				state.loading = "failed";
 			},

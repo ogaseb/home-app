@@ -16,7 +16,7 @@ export class ShowsService {
     const {
       title,
       originalTitle,
-      id: showId,
+      showId,
       posterPath,
       voteAverage,
       releaseDate,
@@ -57,7 +57,7 @@ export class ShowsService {
     const {
       title,
       originalTitle,
-      id: showId,
+      showId,
       posterPath,
       voteAverage,
       releaseDate,

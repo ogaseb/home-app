@@ -18,6 +18,7 @@ const initialState: TShowsStoreState = {
 		results: [],
 	},
 	latestShowId: 0,
+	lastSearchedMovie: "",
 	currentCategory: "popular",
 	currentMediaType: "movie",
 	loading: "idle",
@@ -51,7 +52,7 @@ const searchByQuery = createAsyncThunk(
 	async ({ query, page }: { query: string; page: number }) => {
 		const endpoint = `${TMDB_API_URL}/search/multi?api_key=${process.env.REACT_APP_TMDB_API_KEY}&query=${query}&page=${page}`;
 		const data = await fetchMovies(endpoint);
-		return data;
+		return { data, query };
 	},
 );
 
@@ -154,7 +155,7 @@ const getNowPlaying = createAsyncThunk(
 	},
 );
 
-export const tmdbShowsStore = createSlice({
+export const tmdbShows = createSlice({
 	name: "tmdbShows",
 	initialState,
 	reducers: {
@@ -166,6 +167,13 @@ export const tmdbShowsStore = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
+		builder.addCase(searchByQuery.fulfilled, (state, action) => {
+			state.currentCategory = "search";
+			state.shows = action.payload.data;
+			state.lastSearchedMovie = action.payload.query;
+			state.loading = "succeeded";
+		});
+
 		builder.addMatcher(
 			isAnyOf(
 				searchByQuery.pending,
@@ -183,7 +191,6 @@ export const tmdbShowsStore = createSlice({
 
 		builder.addMatcher(
 			isAnyOf(
-				searchByQuery.fulfilled,
 				getTopRated.fulfilled,
 				getPopular.fulfilled,
 				getRecommendationByShowId.fulfilled,
@@ -195,9 +202,6 @@ export const tmdbShowsStore = createSlice({
 				state.loading = "succeeded";
 				state.shows = action.payload;
 				switch (action.type) {
-					case searchByQuery.fulfilled.type:
-						state.currentCategory = "search";
-						break;
 					case getPopular.fulfilled.type:
 						state.currentCategory = "popular";
 						break;
@@ -249,7 +253,6 @@ export {
 	getNowPlaying,
 };
 
-export const { changeCurrentMediaType, setLatestShowId } =
-	tmdbShowsStore.actions;
+export const { changeCurrentMediaType, setLatestShowId } = tmdbShows.actions;
 
-export default tmdbShowsStore.reducer;
+export default tmdbShows.reducer;
