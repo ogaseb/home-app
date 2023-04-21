@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 const OutletWrapper = styled.div`
 	margin: 16px 16px 0;
@@ -34,6 +35,9 @@ const RootPage = () => {
 
 	return (
 		<>
+			<Helmet>
+				<title>Furry Hideout</title>
+			</Helmet>
 			<HeaderBar />
 			<SnackbarAlert />
 			<OutletWrapper>
