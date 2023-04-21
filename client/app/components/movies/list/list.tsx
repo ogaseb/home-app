@@ -9,7 +9,6 @@ import { MoviesListError } from "./error/error";
 import { addedUserResults } from "@stores/shows_store/user_shows/user_shows";
 import { MoviesListRating } from "./rating/rating";
 import { MoviesListPoster } from "./poster/poster";
-import { useMemo } from "react";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -106,19 +105,11 @@ const MoviesList = () => {
 		return <MoviesListError />;
 	}
 
-	const movies = useMemo(() => {
-		if (searchShows.length) {
-			return searchShows;
-		}
-		if (whichShowsResultsToShow === "tmdb") {
-			return resultsTmdb;
-		}
-		if (whichShowsResultsToShow === "user") {
-			return resultsUser;
-		}
-
-		return resultsTmdb;
-	}, [resultsTmdb, resultsTmdb, searchShows, whichShowsResultsToShow]);
+	const movies = searchShows.length
+		? searchShows
+		: whichShowsResultsToShow === "user"
+		? resultsUser
+		: resultsTmdb;
 
 	return (
 		<MoviesListWrapper>

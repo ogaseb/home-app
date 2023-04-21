@@ -22,7 +22,7 @@
 		"tsconfig.paths.json"
 	],
 	"rules": {
-		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"indent": ["off", "tab", { "SwitchCase": 1 }],
 		"linebreak-style": ["error", "unix"],
 		"quotes": ["error", "double"],
 		"react/react-in-jsx-scope": ["off"]
