@@ -46,6 +46,7 @@ const StyledInput = styled(TextField)`
 
 const MoviesHeaderSearch = () => {
 	const dispatch = useAppDispatch();
+	const resultsUser = useAppSelector(addedUserResults);
 	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
 	const schema = yup
@@ -62,7 +63,6 @@ const MoviesHeaderSearch = () => {
 		resolver: yupResolver(schema),
 	});
 
-	const resultsUser = useAppSelector(addedUserResults);
 	const fuse = new Fuse(resultsUser, {
 		keys: ["title", "originalTitle"],
 		threshold: 0.5,
