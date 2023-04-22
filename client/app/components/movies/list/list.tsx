@@ -73,7 +73,8 @@ const MovieReleaseDate = styled.div`
 	flex: 1;
 
 	${mediaQuery("largeHandset")`
-		display: none;
+		flex: 50%;
+		margin-top: 8px;
 	`}
 `;
 
