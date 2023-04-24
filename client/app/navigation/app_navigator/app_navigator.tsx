@@ -1,10 +1,11 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Link, createBrowserRouter } from "react-router-dom";
 import { RootPage } from "@pages/root_page/root_page";
 import { MainPage } from "@pages/main_page/main_page";
 import { ProtectedRoute } from "@components/protected_route/protected_route";
-import TestComponents from "@pages/shopping_list_page/shopping_list_page";
+import ShoppingListPage from "@pages/shopping_page/shopping_list_page/shopping_list_page";
 import ShowsPage from "@pages/shows_page/shows_page";
 import LoginPage from "@pages/login_page/login_page";
+import ShoppingPage from "@pages/shopping_page/shopping_page";
 
 const router = createBrowserRouter([
 	{
@@ -27,7 +28,15 @@ const router = createBrowserRouter([
 				path: "/shopping",
 				element: (
 					<ProtectedRoute>
-						<TestComponents />
+						<ShoppingPage />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/shopping/:id",
+				element: (
+					<ProtectedRoute>
+						<ShoppingListPage />
 					</ProtectedRoute>
 				),
 			},
@@ -43,7 +52,7 @@ const router = createBrowserRouter([
 				path: "/others",
 				element: (
 					<ProtectedRoute>
-						<TestComponents />
+						<ShoppingListPage />
 					</ProtectedRoute>
 				),
 			},

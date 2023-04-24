@@ -6,6 +6,8 @@ import { googleLogout } from "@react-oauth/google";
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import { checkIfLoggedIn, logOut } from "@stores/user_store/user_store";
 import { showAlert } from "@stores/ui_store/ui_store";
+import { CustomBreadcrumbs } from "@components/breadcrumbs/breadcrumbs";
+import { useMediaQuery } from "react-responsive";
 
 const StyledAppBar = styled(AppBar)`
 	&& {
@@ -21,7 +23,6 @@ const StyledAppBar = styled(AppBar)`
 
 const HeaderBar = () => {
 	const location = useLocation();
-	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const isLoggedIn = useAppSelector(checkIfLoggedIn);
 
@@ -37,24 +38,12 @@ const HeaderBar = () => {
 		<div>
 			<StyledAppBar position="sticky">
 				<Toolbar>
-					{location.pathname !== "/" && isLoggedIn && (
-						<IconButton
-							size="large"
-							edge="start"
-							color="inherit"
-							aria-label="menu"
-							sx={{ mr: 2 }}
-							onClick={() => navigate(-1)}
-						>
-							<ArrowBack />
-						</IconButton>
-					)}
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-						Furry Hideout App
-					</Typography>
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-						{user?.nickname}
-					</Typography>
+					{location.pathname !== "/" && isLoggedIn && <CustomBreadcrumbs />}
+					<Typography
+						variant="h6"
+						component="div"
+						sx={{ flexGrow: 1 }}
+					></Typography>
 					{isLoggedIn && (
 						<Button color="inherit" onClick={handleLogout}>
 							Logout

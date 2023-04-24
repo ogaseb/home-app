@@ -34,13 +34,18 @@ const StyledInput = styled(TextField)`
 		background-color: rgba(25, 118, 210, 0.04);
 		border-radius: 4px;
 		color: white;
-		margin-right: 16px;
 
 		.MuiOutlinedInput-root {
 			color: white;
 			height: 32px;
 			border: 1px solid rgba(25, 118, 210, 0.5);
 		}
+	}
+`;
+
+const StyledButton = styled(Button)`
+	&& {
+		margin-left: 16px;
 	}
 `;
 
@@ -93,9 +98,9 @@ const MoviesHeaderSearch = () => {
 				)}
 			/>
 			{whichShowsResultsToShow === "tmdb" && (
-				<Button type="submit" variant="outlined" size="small">
+				<StyledButton type="submit" variant="outlined" size="small">
 					Search
-				</Button>
+				</StyledButton>
 			)}
 		</StyledForm>
 	);

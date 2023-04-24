@@ -26,7 +26,9 @@ const RootPage = () => {
 
 		if (accessToken) {
 			dispatch(signIn(JSON.parse(accessToken)));
-			navigate(location.pathname);
+			location.pathname === "/login"
+				? navigate("/")
+				: navigate(location.pathname);
 		} else {
 			navigate("/login");
 			return;

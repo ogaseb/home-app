@@ -18,19 +18,31 @@ import { ProgressSpinner } from "@components/progress/progress";
 import { showAlert, showTmdbShowsResults } from "@stores/ui_store/ui_store";
 
 const ButtonWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 2;
+	&& {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		flex: 2;
 
-	${mediaQuery("largeHandset")`
+		.MuiButtonBase-root {
+			width: 80%;
+			font-size: 12px;
+			line-height: 24px;
+		}
+
+		${mediaQuery("largeHandset")`
     margin: 12px 0 0 0;
 		flex-basis: 100%;
+		flex-direction: row;
+		line-height: 10px;
+		font-size: 10px;
 
 		& .MuiButton-root {
 			font-size: 10px;
 		}
 	`}
+	}
 `;
 
 const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
@@ -78,74 +90,73 @@ const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 
 	return (
 		<ButtonWrapper>
-			<ButtonGroup
-				orientation={isMobile ? "horizontal" : "vertical"}
-				size="small"
+			<Button
+				variant="outlined"
+				color={show.isAdded ? "success" : "primary"}
+				disableRipple
+				disabled={userShowLoading === "pending"}
+				onClick={() => handleAddShow(show)}
 			>
-				<Button
-					color={show.isAdded ? "success" : "primary"}
-					disableRipple
-					disabled={userShowLoading === "pending"}
-					onClick={() => handleAddShow(show)}
-				>
-					{userShowLoading === "pending" ? (
-						<ProgressSpinner />
-					) : show.isAdded ? (
-						"Remove"
-					) : (
-						"Add"
-					)}
-				</Button>
-				<Button
-					disableRipple
-					color={show.isWatched ? "warning" : "primary"}
-					onClick={() => handleWatchedShow(show)}
-				>
-					{userShowLoading === "pending" ? (
-						<ProgressSpinner />
-					) : show.isWatched ? (
-						"Unwatch"
-					) : (
-						"Watched"
-					)}
-				</Button>
-				<Button
-					disableRipple
-					onClick={() => {
-						if (whichShowsResultsToShow === "user") {
-							dispatch(showTmdbShowsResults());
-						}
-						dispatch(setLatestShowId(show.id));
-						dispatch(
-							getRecommendationByShowId({
-								id: show.id,
-								mediaType: show.mediaType,
-								page: 1,
-							}),
-						);
-					}}
-				>
-					{show.mediaType === "movie" ? "Recommend Movies" : "Recommend Shows"}
-				</Button>
-				<Button
-					disableRipple
-					onClick={() => {
-						if (whichShowsResultsToShow === "user") {
-							dispatch(showTmdbShowsResults());
-						}
-						dispatch(setLatestShowId(show.id));
-						dispatch(
-							getSimilarByShowId({
-								id: show.id,
-								mediaType: show.mediaType,
-								page: 1,
-							}),
-						);
-					}}
-				>
-					{show.mediaType === "movie" ? "Similar Movies" : "Similar Shows"}
-				</Button>
-			</ButtonGroup>
+				{userShowLoading === "pending" ? (
+					<ProgressSpinner />
+				) : show.isAdded ? (
+					"Remove"
+				) : (
+					"Add"
+				)}
+			</Button>
+			<Button
+				variant="outlined"
+				disableRipple
+				color={show.isWatched ? "warning" : "primary"}
+				onClick={() => handleWatchedShow(show)}
+			>
+				{userShowLoading === "pending" ? (
+					<ProgressSpinner />
+				) : show.isWatched ? (
+					"Unwatch"
+				) : (
+					"Watched"
+				)}
+			</Button>
+			<Button
+				variant="outlined"
+				disableRipple
+				onClick={() => {
+					if (whichShowsResultsToShow === "user") {
+						dispatch(showTmdbShowsResults());
+					}
+					dispatch(setLatestShowId(show.id));
+					dispatch(
+						getRecommendationByShowId({
+							id: show.id,
+							mediaType: show.mediaType,
+							page: 1,
+						}),
+					);
+				}}
+			>
+				Recommend
+			</Button>
+			<Button
+				disableRipple
+				variant="outlined"
+				onClick={() => {
+					if (whichShowsResultsToShow === "user") {
+						dispatch(showTmdbShowsResults());
+					}
+					dispatch(setLatestShowId(show.id));
+					dispatch(
+						getSimilarByShowId({
+							id: show.id,
+							mediaType: show.mediaType,
+							page: 1,
+						}),
+					);
+				}}
+			>
+				Similar
+			</Button>
 		</ButtonWrapper>
 	);
 };

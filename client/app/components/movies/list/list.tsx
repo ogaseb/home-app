@@ -9,6 +9,7 @@ import { MoviesListError } from "./error/error";
 import { addedUserResults } from "@stores/shows_store/user_shows/user_shows";
 import { MoviesListRating } from "./rating/rating";
 import { MoviesListPoster } from "./poster/poster";
+import { useMediaQuery } from "react-responsive";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -73,8 +74,9 @@ const MovieReleaseDate = styled.div`
 	flex: 1;
 
 	${mediaQuery("largeHandset")`
-		flex: 50%;
+		flex: 60%;
 		margin-top: 8px;
+		font-size: 12px;
 	`}
 `;
 
@@ -112,6 +114,10 @@ const MoviesList = () => {
 		? resultsUser
 		: resultsTmdb;
 
+	const isMobile = useMediaQuery({
+		query: "(max-width: 480px)",
+	});
+
 	return (
 		<MoviesListWrapper>
 			<MoviesListHeader />
@@ -138,7 +144,9 @@ const MoviesList = () => {
 								<MovieDescription>{overview}</MovieDescription>
 							</MovieTextWrapper>
 							<MoviesListRating voteAverage={voteAverage} />
-							<MovieReleaseDate>{releaseDate}</MovieReleaseDate>
+							<MovieReleaseDate>
+								{isMobile ? `Release date: ${releaseDate}` : releaseDate}
+							</MovieReleaseDate>
 							<MoviesListActionButtons show={show} />
 						</MovieListItem>
 					);

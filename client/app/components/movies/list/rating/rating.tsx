@@ -11,7 +11,8 @@ const MovieRatingWrapper = styled.div`
 	position: relative;
 
 	${mediaQuery("largeHandset")`
-		display: none;
+		flex: 40%;
+		margin-top: 8px;
 	`}
 `;
 const MoviesRatingText = styled.div`
