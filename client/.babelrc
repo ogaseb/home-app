@@ -6,19 +6,19 @@
 			{
 				"root": ["."],
 				"alias": {
-					"@assets": "./src/assets",
-					"@components": "./src/components",
-					"@contexts": "./src/contexts",
-					"@hooks": "./src/hooks",
-					"@locales": "./src/locales",
-					"@models": "./src/models",
-					"@navigation": "./src/navigation",
-					"@pages": "./src/pages",
-					"@services": "./src/services",
-					"@stores": "./src/stores",
-					"@theme": "./src/theme",
-					"@utils": "./src/utils",
-					"@gfx": "./src/gfx"
+					"@assets": "./app/assets",
+					"@components": "./app/components",
+					"@contexts": "./app/contexts",
+					"@hooks": "./app/hooks",
+					"@locales": "./app/locales",
+					"@models": "./app/models",
+					"@navigation": "./app/navigation",
+					"@pages": "./app/pages",
+					"@services": "./app/services",
+					"@stores": "./app/stores",
+					"@theme": "./app/theme",
+					"@utils": "./app/utils",
+					"@gfx": "./app/gfx"
 				}
 			}
 		]
