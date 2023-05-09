@@ -48,10 +48,6 @@ const ButtonWrapper = styled.div`
 const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 	const dispatch = useAppDispatch();
 
-	const isMobile = useMediaQuery({
-		query: `(max-width: ${screens.largeHandset}px)`,
-	});
-
 	const handleAddShow = async (show: TShowsResultUser) => {
 		try {
 			await dispatch(toggleAddUserShow({ show }));
