@@ -1,5 +1,5 @@
 type TUiStoreState = {
-	menuDrawerState: boolean;
+	showsMenuDrawer: boolean;
 	whichShowsResultsToShow: "tmdb" | "user";
 	alertMessageQueue: {
 		message: string;

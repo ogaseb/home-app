@@ -4,9 +4,9 @@ import {
 	createSlice,
 	isAnyOf,
 } from "@reduxjs/toolkit";
-import axios from "axios";
 import { TShowsResultUser, TShowsStoreStateUser } from "./user_shows.types";
 import { logOut } from "@stores/user_store/user_store";
+import axios from "axios";
 
 const initialState: TShowsStoreStateUser = {
 	shows: {
@@ -18,36 +18,58 @@ const initialState: TShowsStoreStateUser = {
 
 const toggleAddUserShow = createAsyncThunk(
 	"user/toggleAddUserShow",
-	async ({ show }: { show: TShowsResultUser }) => {
-		const {
-			data: { show: showResponse },
-		} = await axios.post(`${process.env.REACT_APP_API_URL}/shows/add`, {
-			show,
-		});
+	async ({ show }: { show: TShowsResultUser }, { dispatch }) => {
+		try {
+			const {
+				data: { show: showResponse },
+			} = await axios.post("shows/add", {
+				show,
+			});
 
-		return showResponse;
+			return showResponse;
+		} catch (error) {
+			dispatch(logOut());
+			throw {
+				name: "Unauthorized",
+				message: "Could not authenticate",
+				code: "401",
+			};
+		}
 	},
 );
 
 const toggleWatchedUserShow = createAsyncThunk(
 	"user/toggleWatchedUserShow",
-	async ({ show }: { show: TShowsResultUser }) => {
-		const {
-			data: { show: showResponse },
-		} = await axios.post(`${process.env.REACT_APP_API_URL}/shows/watched`, {
-			show,
-		});
+	async ({ show }: { show: TShowsResultUser }, { dispatch }) => {
+		try {
+			const {
+				data: { show: showResponse },
+			} = await axios.post("shows/watched", {
+				show,
+			});
 
-		return showResponse;
+			return showResponse;
+		} catch (error) {
+			dispatch(logOut());
+			throw {
+				name: "Unauthorized",
+				message: "Could not authenticate",
+				code: "401",
+			};
+		}
 	},
 );
 
 const getAllUserShows = createAsyncThunk("user/getAllUserShows", async () => {
-	const {
-		data: { shows },
-	} = await axios.get(`${process.env.REACT_APP_API_URL}/shows/all`);
+	try {
+		const {
+			data: { shows },
+		} = await axios.get("shows/all");
 
-	return shows;
+		return shows;
+	} catch (error) {
+		throw { name: "Not found", message: "Show not found", code: "404" };
+	}
 });
 
 export const userShows = createSlice({
@@ -83,7 +105,6 @@ export const userShows = createSlice({
 			),
 			(state) => {
 				state.loading = "failed";
-				logOut();
 			},
 		);
 	},
@@ -111,6 +132,8 @@ export {
 	toggleWatchedUserShow,
 	getAllUserShows,
 	addedUserResults,
+	userShowsArray,
+	selectedCurrentMediaType,
 };
 
 export const { setSearchShows } = userShows.actions;

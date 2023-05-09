@@ -6,8 +6,11 @@ import othersImg from "@gfx/4.png";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled(Grid)`
-	flex-grow: 1;
-	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 16px);
+	&& {
+		flex-grow: 1;
+		height: calc(100vh - ${(props) => props.theme.appBarHeight} - 16px);
+		margin-top: 0;
+	}
 `;
 
 const StyledPaper = styled(Paper)`

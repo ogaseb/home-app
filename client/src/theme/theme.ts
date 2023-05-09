@@ -16,11 +16,11 @@ const mediaQuery = (key: keyof typeof screens) => {
 };
 
 const theme: DefaultTheme = {
-	appBarHeight: "32px",
+	appBarHeight: "64px",
 	colors: {
-		primary: "#0A2647",
-		secondary: "#144272",
-		tertiary: "#205295",
+		primary: "#1c1d21",
+		secondary: "#23242a",
+		tertiary: "#33343a",
 		black: "#000000",
 		white: "#FFFFFF",
 		success: "#4BB543",

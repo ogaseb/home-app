@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import {
 	addNewShoppingList,
 	changeShoppingListModalState,
-} from "@stores/shopping_store/ui_store/shopping_store";
+} from "@stores/shopping_store/shopping_store";
 
 const ShoppingListDialog = () => {
 	const [name, setName] = useState("");

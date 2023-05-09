@@ -251,6 +251,7 @@ export {
 	getSimilarByShowId,
 	getUpcoming,
 	getNowPlaying,
+	initialState,
 };
 
 export const { changeCurrentMediaType, setLatestShowId } = tmdbShows.actions;

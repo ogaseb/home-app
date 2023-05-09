@@ -14,6 +14,7 @@ import {
 	setSearchShows,
 } from "@stores/shows_store/user_shows/user_shows";
 import { useEffect } from "react";
+import { Typography } from "@mui/material";
 
 const StyledForm = styled.form`
 	display: flex;
@@ -43,9 +44,16 @@ const StyledInput = styled(TextField)`
 	}
 `;
 
-const StyledButton = styled(Button)`
+const Wrapper = styled.div`
 	&& {
-		margin-left: 16px;
+		width: 90%;
+		margin-bottom: 20px;
+	}
+`;
+
+const StyledTypography = styled(Typography)`
+	&& {
+		color: white;
 	}
 `;
 
@@ -89,20 +97,23 @@ const MoviesHeaderSearch = () => {
 	}, [watchedValue]);
 
 	return (
-		<StyledForm onSubmit={handleSubmit(onSubmit)}>
-			<Controller
-				name="movieName"
-				control={control}
-				render={({ field }) => (
-					<StyledInput size="small" variant="outlined" {...field} />
+		<Wrapper>
+			<StyledTypography>Search</StyledTypography>
+			<StyledForm onSubmit={handleSubmit(onSubmit)}>
+				<Controller
+					name="movieName"
+					control={control}
+					render={({ field }) => (
+						<StyledInput size="small" variant="outlined" {...field} />
+					)}
+				/>
+				{whichShowsResultsToShow === "tmdb" && (
+					<Button type="submit" variant="outlined" size="small">
+						Search
+					</Button>
 				)}
-			/>
-			{whichShowsResultsToShow === "tmdb" && (
-				<StyledButton type="submit" variant="outlined" size="small">
-					Search
-				</StyledButton>
-			)}
-		</StyledForm>
+			</StyledForm>
+		</Wrapper>
 	);
 };
 

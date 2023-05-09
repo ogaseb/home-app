@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import shoppingStore from "@stores/shopping_store/ui_store/shopping_store";
+import shoppingStore from "@stores/shopping_store/shopping_store";
 import showsStore from "@stores/shows_store/shows_store";
 import uiStore from "@stores/ui_store/ui_store";
 import userStore from "@stores/user_store/user_store";

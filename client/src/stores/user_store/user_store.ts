@@ -30,7 +30,7 @@ const userLogin = createAsyncThunk(
 	async ({ credentialResponse }: { credentialResponse: any }) => {
 		const {
 			data: { access_token },
-		} = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
+		} = await axios.post(`${process.env.REACT_APP_API_URL}auth/login`, {
 			token: credentialResponse.credential,
 		});
 
@@ -43,7 +43,7 @@ const getUserById = createAsyncThunk(
 	async ({ id }: { id: number }) => {
 		const {
 			data: { user },
-		} = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}/details`);
+		} = await axios.get(`${process.env.REACT_APP_API_URL}users/${id}/details`);
 
 		return user;
 	},
@@ -57,6 +57,9 @@ export const userStore = createSlice({
 			const { name, email, nickname, id } = jwt(action.payload) as any;
 			state.user = { name, email, nickname, id };
 			state.accessToken = action.payload;
+			axios.defaults.headers.common[
+				"Authorization"
+			] = `Bearer ${action.payload?.replace(/"/g, "")}`;
 		},
 		logOut: (state) => {
 			state.user = null;
@@ -69,11 +72,11 @@ export const userStore = createSlice({
 			const { name, email, nickname, id } = user;
 			state.user = { name, email, nickname, id };
 			state.accessToken = action.payload;
-			state.loading = "succeeded";
 			localStorage.setItem("user", JSON.stringify(action.payload));
 			axios.defaults.headers.common[
 				"Authorization"
 			] = `Bearer ${action.payload?.replace(/"/g, "")}`;
+			state.loading = "succeeded";
 		});
 
 		builder.addCase(getUserById.fulfilled, (state, action) => {

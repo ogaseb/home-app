@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
-import { Button, ButtonGroup } from "@mui/material";
-import { mediaQuery } from "@theme/theme";
+import { Button } from "@mui/material";
+import { mediaQuery, screens } from "@theme/theme";
 import {
 	getRecommendationByShowId,
 	getSimilarByShowId,
@@ -47,8 +47,9 @@ const ButtonWrapper = styled.div`
 
 const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 	const dispatch = useAppDispatch();
+
 	const isMobile = useMediaQuery({
-		query: "(max-width: 480px)",
+		query: `(max-width: ${screens.largeHandset}px)`,
 	});
 
 	const handleAddShow = async (show: TShowsResultUser) => {

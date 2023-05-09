@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TUiStoreState } from "./ui_store.types";
 
 const initialState: TUiStoreState = {
-	menuDrawerState: false,
+	showsMenuDrawer: false,
 	whichShowsResultsToShow: "tmdb",
 	alertMessageQueue: [],
 };
@@ -11,8 +11,8 @@ export const uiStore = createSlice({
 	name: "uiStore",
 	initialState,
 	reducers: {
-		toggleMenuDrawer: (state) => {
-			state.menuDrawerState = !state.menuDrawerState;
+		toggleShowsMenuDrawer: (state) => {
+			state.showsMenuDrawer = !state.showsMenuDrawer;
 		},
 		showTmdbShowsResults: (state) => {
 			state.whichShowsResultsToShow = "tmdb";
@@ -40,7 +40,7 @@ export const uiStore = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-	toggleMenuDrawer,
+	toggleShowsMenuDrawer,
 	showTmdbShowsResults,
 	showUserShowsResults,
 	showAlert,

@@ -1,6 +1,6 @@
 import { useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
-import { mediaQuery } from "@theme/theme";
+import { mediaQuery, screens } from "@theme/theme";
 import { mergeShowsFromUserToTmdb } from "@stores/shows_store/shows_store";
 import { ProgressSpinner } from "@components/progress/progress";
 import { MoviesListActionButtons } from "./action_buttons/action_buttons";
@@ -17,17 +17,14 @@ const MoviesListWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 132px);
-
-	border: 1px solid rgba(25, 118, 210, 0.5);
-	box-shadow: -2px 6px 13px -7px rgba(25, 118, 210, 0.5);
+	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 68px);
 
 	& > div:nth-child(even) {
 		background-color: #171717;
 	}
 
 	@media only screen and (max-width: 480px) {
-		height: calc(100vh - ${(props) => props.theme.appBarHeight} - 186px);
+		height: calc(100vh - ${(props) => props.theme.appBarHeight} - 86px);
 	}
 `;
 
@@ -65,6 +62,7 @@ const MovieTitle = styled.div`
 const MovieDescription = styled.div`
 	margin-top: 20px;
 	margin: 20px 8px 0 8px;
+	overflow: hidden;
 `;
 
 const MovieReleaseDate = styled.div`
@@ -115,7 +113,7 @@ const MoviesList = () => {
 		: resultsTmdb;
 
 	const isMobile = useMediaQuery({
-		query: "(max-width: 480px)",
+		query: `(max-width: ${screens.largeHandset}px)`,
 	});
 
 	return (

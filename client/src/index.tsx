@@ -9,6 +9,9 @@ import { appStore } from "@stores/app_store/app_store";
 import { router } from "@navigation/app_navigator/app_navigator";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@theme/theme";
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,

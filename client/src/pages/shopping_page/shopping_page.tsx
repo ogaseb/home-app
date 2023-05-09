@@ -9,7 +9,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { ShoppingListDialog } from "@components/dialogs/shopping_list_dialog";
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import { changeShoppingListModalState } from "@stores/shopping_store/ui_store/shopping_store";
+import { changeShoppingListModalState } from "@stores/shopping_store/shopping_store";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
