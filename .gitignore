@@ -24,3 +24,5 @@ yarn-error.log*
 
 /app/gfx/*
 .env
+.cert
+/server/src/secrets

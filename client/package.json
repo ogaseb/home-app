@@ -41,9 +41,10 @@
 		"yup": "^1.0.2"
 	},
 	"scripts": {
-		"start": "react-app-rewired start",
-		"build": "react-app-rewired build",
-		"test": "react-app-rewired test --env=jsdom",
+
+		"start": "HTTPS=true SSL_CRT_FILE=./.cert/selfsigned.crt SSL_KEY_FILE=./.cert/selfsigned.key react-app-rewired start",
+		"build": "react-app-rewired build && sudo cp -rf ./build/* /var/www/furryhideout.ddns.net/html",
+		"test": "react-app-rewired test",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
