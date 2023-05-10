@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { userShowsApiSlice } from "@services/api/user_shows_api/user_shows_api";
 import shoppingStore from "@stores/shopping_store/shopping_store";
 import showsStore from "@stores/shows_store/shows_store";
 import uiStore from "@stores/ui_store/ui_store";
@@ -10,7 +11,10 @@ export const appStore = configureStore({
 		uiStore: uiStore,
 		showsStore: showsStore,
 		shoppingStore: shoppingStore,
+		[userShowsApiSlice.reducerPath]: userShowsApiSlice.reducer,
 	},
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(userShowsApiSlice.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -1,21 +1,19 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
 import { Button } from "@mui/material";
-import { mediaQuery, screens } from "@theme/theme";
+import { mediaQuery } from "@theme/theme";
 import {
 	getRecommendationByShowId,
 	getSimilarByShowId,
 	setLatestShowId,
 } from "@stores/shows_store/tmdb_shows/tmdb_shows";
-import { useMediaQuery } from "react-responsive";
-import {
-	getAllUserShows,
-	toggleAddUserShow,
-	toggleWatchedUserShow,
-} from "@stores/shows_store/user_shows/user_shows";
 import { TShowsResultUser } from "@stores/shows_store/user_shows/user_shows.types";
 import { ProgressSpinner } from "@components/progress/progress";
 import { showAlert, showTmdbShowsResults } from "@stores/ui_store/ui_store";
+import {
+	useToggleAddUserShowMutation,
+	useToggleWatchedUserShowMutation,
+} from "@services/api/user_shows_api/user_shows_api";
 
 const ButtonWrapper = styled.div`
 	&& {
@@ -48,10 +46,14 @@ const ButtonWrapper = styled.div`
 const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 	const dispatch = useAppDispatch();
 
+	const [toggleAddUserShow, { isLoading: isAdding }] =
+		useToggleAddUserShowMutation();
+	const [toggleWatchedUserShow, { isLoading: isUpdating }] =
+		useToggleWatchedUserShowMutation();
+
 	const handleAddShow = async (show: TShowsResultUser) => {
 		try {
-			await dispatch(toggleAddUserShow({ show }));
-			await dispatch(getAllUserShows());
+			await toggleAddUserShow(show);
 			const messageString = `${show.isAdded ? "Removed" : "Added"} show ${
 				show.isAdded ? "from" : "to"
 			} list.`;
@@ -63,8 +65,7 @@ const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 
 	const handleWatchedShow = async (show: TShowsResultUser) => {
 		try {
-			await dispatch(toggleWatchedUserShow({ show }));
-			await dispatch(getAllUserShows());
+			await toggleWatchedUserShow(show);
 			const messageString = `${show.isWatched ? "Removed" : "Added"} show ${
 				show.isWatched ? "from" : "to"
 			} watched list.`;
@@ -79,10 +80,6 @@ const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 		}
 	};
 
-	const { loading: userShowLoading } = useAppSelector(
-		(state) => state.showsStore.userShows,
-	);
-
 	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
 	return (
@@ -91,24 +88,19 @@ const MoviesListActionButtons = ({ show }: { show: TShowsResultUser }) => {
 				variant="outlined"
 				color={show.isAdded ? "success" : "primary"}
 				disableRipple
-				disabled={userShowLoading === "pending"}
+				disabled={isAdding}
 				onClick={() => handleAddShow(show)}
 			>
-				{userShowLoading === "pending" ? (
-					<ProgressSpinner />
-				) : show.isAdded ? (
-					"Remove"
-				) : (
-					"Add"
-				)}
+				{isAdding ? <ProgressSpinner /> : show.isAdded ? "Remove" : "Add"}
 			</Button>
 			<Button
 				variant="outlined"
 				disableRipple
+				disabled={isUpdating}
 				color={show.isWatched ? "warning" : "primary"}
 				onClick={() => handleWatchedShow(show)}
 			>
-				{userShowLoading === "pending" ? (
+				{isUpdating ? (
 					<ProgressSpinner />
 				) : show.isWatched ? (
 					"Unwatch"

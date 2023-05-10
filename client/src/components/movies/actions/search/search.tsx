@@ -9,12 +9,11 @@ import { mediaQuery } from "@theme/theme";
 import Fuse from "fuse.js";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-	addedUserResults,
-	setSearchShows,
-} from "@stores/shows_store/user_shows/user_shows";
-import { useEffect } from "react";
+import { setSearchShows } from "@stores/shows_store/user_shows/user_shows";
+import { useEffect, useMemo } from "react";
 import { Typography } from "@mui/material";
+import { useGetAllUserShowsQuery } from "@services/api/user_shows_api/user_shows_api";
+import { filteredUserShows } from "@utils/shows/filtered_user_shows";
 
 const StyledForm = styled.form`
 	display: flex;
@@ -58,8 +57,16 @@ const StyledTypography = styled(Typography)`
 `;
 
 const MoviesHeaderSearch = () => {
+	const { currentMediaType } = useAppSelector(
+		(state) => state.showsStore.tmdbShows,
+	);
+	const { data: shows = [] } = useGetAllUserShowsQuery();
+
+	const userShows = useMemo(() => {
+		return filteredUserShows(shows, currentMediaType);
+	}, [shows, currentMediaType]);
+
 	const dispatch = useAppDispatch();
-	const resultsUser = useAppSelector(addedUserResults);
 	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
 	const schema = yup
@@ -76,7 +83,7 @@ const MoviesHeaderSearch = () => {
 		resolver: yupResolver(schema),
 	});
 
-	const fuse = new Fuse(resultsUser, {
+	const fuse = new Fuse(userShows, {
 		keys: ["title", "originalTitle"],
 		threshold: 0.5,
 	});

@@ -14,6 +14,10 @@ import { mediaQuery } from "@theme/theme";
 
 const PaginationWrapper = styled.div`
 	margin-top: 16px;
+	position: absolute;
+	right: 50%;
+	bottom: 0;
+	transform: translateX(50%);
 	display: flex;
 	justify-content: center;
 

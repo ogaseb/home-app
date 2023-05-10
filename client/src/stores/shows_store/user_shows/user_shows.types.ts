@@ -17,9 +17,7 @@ type TShowsResponseUser = {
 };
 
 type TShowsStoreStateUser = {
-	shows: TShowsResponseUser;
 	searchShows: TShowsResponseUser[];
-	loading: "idle" | "pending" | "succeeded" | "failed";
 };
 
 export { TShowsResultUser, TShowsResponseUser, TShowsStoreStateUser };

@@ -1,15 +1,17 @@
 import { useAppSelector } from "@hooks/hooks";
 import styled from "styled-components";
 import { mediaQuery, screens } from "@theme/theme";
-import { mergeShowsFromUserToTmdb } from "@stores/shows_store/shows_store";
 import { ProgressSpinner } from "@components/progress/progress";
 import { MoviesListActionButtons } from "./action_buttons/action_buttons";
 import { MoviesListHeader } from "./header/header";
 import { MoviesListError } from "./error/error";
-import { addedUserResults } from "@stores/shows_store/user_shows/user_shows";
 import { MoviesListRating } from "./rating/rating";
 import { MoviesListPoster } from "./poster/poster";
 import { useMediaQuery } from "react-responsive";
+import { useGetAllUserShowsQuery } from "@services/api/user_shows_api/user_shows_api";
+import { useMemo } from "react";
+import { filteredUserShows } from "@utils/shows/filtered_user_shows";
+import { mergeShowsFromUserToTmdb } from "@utils/shows/merge_shows_from_user_to_tmdb";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -85,36 +87,47 @@ const MovieOriginalTitle = styled.div`
 `;
 
 const MoviesList = () => {
+	const { searchShows } = useAppSelector((state) => state.showsStore.userShows);
+	const {
+		currentMediaType,
+		shows: { results: tmdbShows },
+	} = useAppSelector((state) => state.showsStore.tmdbShows);
+	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
+	const { data: shows = [] } = useGetAllUserShowsQuery();
+
+	const userShows = useMemo(() => {
+		return filteredUserShows(shows, currentMediaType);
+	}, [shows, currentMediaType]);
+
+	const mergedShowsFromUserToTmdb = useMemo(() => {
+		return mergeShowsFromUserToTmdb(shows, tmdbShows);
+	}, [shows, tmdbShows]);
+
 	const { loading: tmdbLoading } = useAppSelector(
 		(state) => state.showsStore.tmdbShows,
 	);
-	const { searchShows } = useAppSelector((state) => state.showsStore.userShows);
-	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
 
-	const resultsUser = useAppSelector(addedUserResults);
-	const resultsTmdb = useAppSelector(mergeShowsFromUserToTmdb);
+	const isMobile = useMediaQuery({
+		query: `(max-width: ${screens.largeHandset}px)`,
+	});
 
 	if (
 		whichShowsResultsToShow === "tmdb" &&
 		tmdbLoading === "succeeded" &&
-		!resultsTmdb.length
+		!mergedShowsFromUserToTmdb.length
 	) {
 		return <MoviesListError />;
 	}
 
-	if (whichShowsResultsToShow === "user" && !resultsUser.length) {
+	if (whichShowsResultsToShow === "user" && !userShows.length) {
 		return <MoviesListError />;
 	}
 
 	const movies = searchShows.length
 		? searchShows
 		: whichShowsResultsToShow === "user"
-		? resultsUser
-		: resultsTmdb;
-
-	const isMobile = useMediaQuery({
-		query: `(max-width: ${screens.largeHandset}px)`,
-	});
+		? userShows
+		: mergedShowsFromUserToTmdb;
 
 	return (
 		<MoviesListWrapper>

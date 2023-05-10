@@ -26,6 +26,7 @@ export class ShowsController {
   @UseGuards(AuthGuard)
   @Post("/add")
   async add(@Body("show") show, @Request() req: any): Promise<any> {
+    console.log(show);
     const data = await this.showsService.addShow(show, req.user.id);
     return {
       show: data,

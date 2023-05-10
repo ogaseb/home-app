@@ -6,7 +6,6 @@ import { mediaQuery, screens } from "@theme/theme";
 import { MoviesActions } from "@components/movies/actions/actions";
 import { MoviesList } from "@components/movies/list/list";
 import { MoviesPagination } from "@components/movies/pagination/pagination";
-import { getAllUserShows } from "@stores/shows_store/user_shows/user_shows";
 import { Drawer, IconButton, Toolbar } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
 import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
@@ -65,7 +64,7 @@ const ShowsPage = () => {
 	});
 
 	useEffect(() => {
-		dispatch(getAllUserShows());
+		// dispatch(getAllUserShows());
 
 		if (showsLoading === "idle") {
 			dispatch(getPopular({ page }));
