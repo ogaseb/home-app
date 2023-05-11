@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { Typography } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
 import { ButtonGroupWrapper } from "../styles/button_group_wrapper.styled";

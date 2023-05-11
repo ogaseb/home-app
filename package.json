@@ -9,27 +9,21 @@
     "server": "npm run start:dev --prefix server",
     "client": "PORT=3000 npm start --prefix client",
     "build": "cd client && yarn install && yarn build && cd ../server && yarn build",
-    "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
-    "start": "concurrently \"yarn server\" \"yarn client\""
+    "start": "concurrently \"yarn server\" \"yarn client\"",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
-  "lint-staged": {
-    "/client/**/*.{ts,tsx,js,jsx,json}": [
-      "eslint . --fix",
-      "prettier --write ."
-    ]
-  },
-  "devDependencies": {
-    "eslint": "^8.38.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.1",
-    "prettier": "^2.8.7"
-  },
   "dependencies": {
     "concurrently": "^8.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
   }
 }

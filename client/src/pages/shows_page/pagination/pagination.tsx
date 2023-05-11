@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { setCurrentPage } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import styled from "styled-components";
 import { Pagination } from "@mui/material";

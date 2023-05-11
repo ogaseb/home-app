@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { mediaQuery } from "@theme/theme";

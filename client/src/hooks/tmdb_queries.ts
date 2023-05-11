@@ -3,7 +3,7 @@ import {
 	useSearchQuery,
 	useGetRecommendedOrSimilarQuery,
 } from "@services/api/TMDB_api/TMDB_api";
-import { useAppSelector } from "./hooks";
+import { useAppSelector } from "./redux_hooks";
 
 function useTMDBQueries() {
 	const {

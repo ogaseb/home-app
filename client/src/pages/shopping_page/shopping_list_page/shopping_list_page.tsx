@@ -1,5 +1,5 @@
 import { Paper } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 

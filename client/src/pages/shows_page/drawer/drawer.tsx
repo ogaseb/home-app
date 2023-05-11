@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import styled from "styled-components";
 import { Drawer, IconButton, Toolbar } from "@mui/material";
 import { useMediaQuery } from "react-responsive";

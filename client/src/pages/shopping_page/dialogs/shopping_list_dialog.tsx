@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 	TextField,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import {
 	addNewShoppingList,
 	changeShoppingListModalState,

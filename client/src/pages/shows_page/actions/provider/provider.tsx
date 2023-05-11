@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { useMediaQuery } from "react-responsive";
 import {
 	showTmdbShowsResults,

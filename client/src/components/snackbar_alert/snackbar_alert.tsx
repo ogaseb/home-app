@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { Alert, Snackbar } from "@mui/material";
 import { removeAlertFromQueue } from "@stores/ui_store/ui_store";
 

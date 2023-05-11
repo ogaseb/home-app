@@ -2,7 +2,7 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
-import { useAppDispatch } from "@hooks/hooks";
+import { useAppDispatch } from "@hooks/redux_hooks";
 import { logOut } from "@stores/auth_store/auth_store";
 import { showAlert, toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
 import { CustomBreadcrumbs } from "@components/breadcrumbs/breadcrumbs";

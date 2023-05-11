@@ -1,4 +1,4 @@
-import { useAppSelector } from "@hooks/hooks";
+import { useAppSelector } from "@hooks/redux_hooks";
 import styled from "styled-components";
 import { mediaQuery, screens } from "@theme/theme";
 import { ProgressSpinner } from "@components/progress/progress";
