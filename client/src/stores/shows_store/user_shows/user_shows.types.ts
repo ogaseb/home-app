@@ -1,6 +1,7 @@
 type TShowsResultUser = {
 	title: string;
 	originalTitle: string;
+	showId: number;
 	id: number;
 	posterPath: string;
 	voteAverage: number;
@@ -8,16 +9,11 @@ type TShowsResultUser = {
 	overview: string;
 	isWatched: boolean;
 	isAdded: boolean;
-	showId: number;
 	mediaType: "movie" | "tv" | "person";
 };
 
-type TShowsResponseUser = {
-	results: TShowsResultUser[];
-};
-
 type TShowsStoreStateUser = {
-	searchShows: TShowsResponseUser[];
+	searchShows: TShowsResultUser[];
 };
 
-export { TShowsResultUser, TShowsResponseUser, TShowsStoreStateUser };
+export { TShowsResultUser, TShowsStoreStateUser };

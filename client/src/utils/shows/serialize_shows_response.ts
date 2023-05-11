@@ -1,6 +1,6 @@
-import { TShowsResponse } from "@stores/shows_store/tmdb_shows/tmdb_shows.types";
+import { TShowsResponseTMDB } from "@stores/shows_store/tmdb_shows/tmdb_shows.types";
 
-const serializeShowsResponse = (data: {
+type TTMDBResponse = {
 	page: number;
 	total_pages: number;
 	results: {
@@ -16,7 +16,9 @@ const serializeShowsResponse = (data: {
 		vote_average: number;
 		overview: string;
 	}[];
-}): TShowsResponse => {
+};
+
+const serializeShowsResponse = (data: TTMDBResponse): TShowsResponseTMDB => {
 	const serializedResults = data.results
 		.filter((result) => result.media_type !== "person")
 		.map((result) => ({
@@ -28,9 +30,12 @@ const serializeShowsResponse = (data: {
 			overview: result.overview,
 			voteAverage: result.vote_average,
 			mediaType: result.media_type,
+			isWatched: false,
+			isAdded: false,
+			id: result.id,
 		}));
 
-	const serializedData: TShowsResponse = {
+	const serializedData: TShowsResponseTMDB = {
 		page: data.page,
 		totalPages: data.total_pages,
 		results: serializedResults,
@@ -39,4 +44,4 @@ const serializeShowsResponse = (data: {
 	return serializedData;
 };
 
-export { serializeShowsResponse };
+export { serializeShowsResponse, TTMDBResponse };

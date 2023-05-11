@@ -1,20 +1,21 @@
-type TShowsResultTmdb = {
+type TShowsResultTMDB = {
 	title: string;
 	originalTitle: string;
 	showId: number;
+	id: number;
 	posterPath: string;
 	voteAverage: number;
 	releaseDate: string;
 	overview: string;
-	isAdded?: boolean;
-	isWatched?: boolean;
+	isAdded: boolean;
+	isWatched: boolean;
 	mediaType: "movie" | "tv" | "person";
 };
 
-type TShowsResponse = {
+type TShowsResponseTMDB = {
 	page: number;
 	totalPages: number;
-	results: TShowsResultTmdb[];
+	results: TShowsResultTMDB[];
 };
 
 type TSerializeShowsResults = {
@@ -32,24 +33,26 @@ type TSerializeShowsResults = {
 };
 
 type TShowsStoreState = {
-	shows: TShowsResponse;
+	shows: TShowsResponseTMDB;
 	loading: "idle" | "pending" | "succeeded" | "failed";
 	currentMediaType: "movie" | "tv";
 	latestShowId: number;
 	lastSearchedMovie: string;
 	currentCategory:
+		| "search"
 		| "popular"
 		| "top_rated"
-		| "search"
 		| "upcoming"
 		| "now_playing"
-		| "similar"
-		| "recommendation";
+		| "airing_today"
+		| "on_the_air"
+		| "recommendations"
+		| "similar";
 };
 
 export {
-	TShowsResultTmdb,
-	TShowsResponse,
+	TShowsResultTMDB,
+	TShowsResponseTMDB,
 	TSerializeShowsResults,
 	TShowsStoreState,
 };

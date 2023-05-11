@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import { getPopular } from "@stores/shows_store/tmdb_shows/tmdb_shows";
+import { changeCurrentCategory } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { mediaQuery, screens } from "@theme/theme";
-import { MoviesActions } from "@components/movies/actions/actions";
-import { MoviesList } from "@components/movies/list/list";
-import { MoviesPagination } from "@components/movies/pagination/pagination";
+import { MoviesActions } from "@pages/shows_page/actions/actions";
+import { MoviesList } from "@pages/shows_page/list/list";
+import { MoviesPagination } from "@pages/shows_page/pagination/pagination";
 import { Drawer, IconButton, Toolbar } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
 import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
@@ -53,7 +53,7 @@ const ShowsPage = () => {
 	const dispatch = useAppDispatch();
 	const {
 		loading: showsLoading,
-		shows: { results, page },
+		shows: { results },
 	} = useAppSelector((state) => state.showsStore.tmdbShows);
 	const { whichShowsResultsToShow, showsMenuDrawer } = useAppSelector(
 		(state) => state.uiStore,
@@ -64,10 +64,8 @@ const ShowsPage = () => {
 	});
 
 	useEffect(() => {
-		// dispatch(getAllUserShows());
-
 		if (showsLoading === "idle") {
-			dispatch(getPopular({ page }));
+			dispatch(changeCurrentCategory("popular"));
 		}
 	}, [showsLoading, results]);
 
@@ -104,7 +102,7 @@ const ShowsPage = () => {
 						open={showsMenuDrawer}
 						onClose={handleDrawerToggle}
 						ModalProps={{
-							keepMounted: true, // Better open performance on mobile.
+							keepMounted: true,
 						}}
 					>
 						{drawer}
@@ -112,7 +110,7 @@ const ShowsPage = () => {
 				) : (
 					<Drawer
 						ModalProps={{
-							keepMounted: true, // Better open performance on mobile.
+							keepMounted: true,
 						}}
 						variant="permanent"
 						open={false}

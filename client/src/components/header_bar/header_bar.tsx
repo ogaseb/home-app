@@ -2,13 +2,14 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
-import { useAppDispatch, useAppSelector } from "@hooks/hooks";
-import { checkIfLoggedIn, logOut } from "@stores/user_store/user_store";
+import { useAppDispatch } from "@hooks/hooks";
+import { logOut } from "@stores/auth_store/auth_store";
 import { showAlert, toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
 import { CustomBreadcrumbs } from "@components/breadcrumbs/breadcrumbs";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useMediaQuery } from "react-responsive";
 import { screens } from "@theme/theme";
+import { useAuthUser } from "@hooks/auth_user";
 
 const StyledAppBar = styled(AppBar)`
 	&& {
@@ -26,7 +27,7 @@ const StyledAppBar = styled(AppBar)`
 const HeaderBar = () => {
 	const location = useLocation();
 	const dispatch = useAppDispatch();
-	const isLoggedIn = useAppSelector(checkIfLoggedIn);
+	const { isLoggedIn } = useAuthUser();
 
 	const handleLogout = async () => {
 		dispatch(logOut());

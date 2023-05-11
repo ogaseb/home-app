@@ -13,6 +13,7 @@ export class AuthController {
 
   @Post("/login")
   async login(@Body("token") token): Promise<any> {
+    console.log(token);
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,

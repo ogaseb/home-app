@@ -16,7 +16,7 @@
 			"@stores/*": ["src/stores/*"],
 			"@theme/*": ["src/theme/*"],
 			"@utils/*": ["src/utils/*"],
-			"@gfx/*": ["src/gfx/*"]
+			"@assets/*": ["src/assets/*"]
 		},
 		"target": "esnext",
 		"lib": ["dom", "dom.iterable", "esnext", "ES6"],

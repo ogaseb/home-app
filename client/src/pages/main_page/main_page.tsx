@@ -1,8 +1,8 @@
 import { Grid, Paper } from "@mui/material";
 import styled from "styled-components";
-import shoppingImg from "@gfx/1.jpg";
-import moviesImg from "@gfx/3.png";
-import othersImg from "@gfx/4.png";
+import shoppingImg from "@assets/1.png";
+import moviesImg from "@assets/3.png";
+import othersImg from "@assets/4.png";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled(Grid)`

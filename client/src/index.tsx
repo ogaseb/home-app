@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "normalize.css";
-import "./index.css";
+import "@assets/index.css";
 import { RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
@@ -9,9 +9,6 @@ import { appStore } from "@stores/app_store/app_store";
 import { router } from "@navigation/app_navigator/app_navigator";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@theme/theme";
-import axios from "axios";
-
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,

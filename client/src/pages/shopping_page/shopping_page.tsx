@@ -1,13 +1,11 @@
-import {
-	SpeedDial,
-	SpeedDialIcon,
-	SpeedDialAction,
-	Paper,
-	Grid,
-} from "@mui/material";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
-import { ShoppingListDialog } from "@components/dialogs/shopping_list_dialog";
+import { ShoppingListDialog } from "@pages/shopping_page/dialogs/shopping_list_dialog";
 import { useAppDispatch, useAppSelector } from "@hooks/hooks";
 import { changeShoppingListModalState } from "@stores/shopping_store/shopping_store";
 import styled from "styled-components";

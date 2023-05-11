@@ -1,20 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userShowsApiSlice } from "@services/api/user_shows_api/user_shows_api";
 import shoppingStore from "@stores/shopping_store/shopping_store";
 import showsStore from "@stores/shows_store/shows_store";
 import uiStore from "@stores/ui_store/ui_store";
-import userStore from "@stores/user_store/user_store";
+import authStore from "@stores/auth_store/auth_store";
+import { userApi } from "@services/api/user_api/user_api";
+import { TMDBShowsApi } from "@services/api/TMDB_api/TMDB_api";
 
 export const appStore = configureStore({
 	reducer: {
-		userStore: userStore,
+		authStore: authStore,
 		uiStore: uiStore,
 		showsStore: showsStore,
 		shoppingStore: shoppingStore,
-		[userShowsApiSlice.reducerPath]: userShowsApiSlice.reducer,
+		[userApi.reducerPath]: userApi.reducer,
+		[TMDBShowsApi.reducerPath]: TMDBShowsApi.reducer,
 	},
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(userShowsApiSlice.middleware),
+		getDefaultMiddleware().concat([
+			userApi.middleware,
+			TMDBShowsApi.middleware,
+		]),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

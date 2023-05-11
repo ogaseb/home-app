@@ -1,7 +1,5 @@
-import { useAppDispatch } from "@hooks/hooks";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { showAlert } from "@stores/ui_store/ui_store";
-import { userLogin } from "@stores/user_store/user_store";
+import { useUserLoginMutation } from "@services/api/user_api/user_api";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -13,7 +11,7 @@ const Wrapper = styled.div`
 `;
 
 const LoginPage = () => {
-	const dispatch = useAppDispatch();
+	const [userLogin] = useUserLoginMutation();
 	const navigate = useNavigate();
 
 	return (
@@ -24,15 +22,10 @@ const LoginPage = () => {
 				<GoogleLogin
 					onSuccess={async (credentialResponse) => {
 						try {
-							await dispatch(userLogin({ credentialResponse }));
-							dispatch(
-								showAlert({ message: "Login Success", severity: "success" }),
-							);
+							await userLogin(credentialResponse);
 							navigate("/");
 						} catch (e) {
-							dispatch(
-								showAlert({ message: "Login Failed:", severity: "error" }),
-							);
+							//empty
 						}
 					}}
 					onError={() => console.log("Login Failed")}
