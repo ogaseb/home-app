@@ -15,7 +15,10 @@ import { setSearchShows } from "@stores/shows_store/user_shows/user_shows";
 import { useMemo } from "react";
 import { useGetAllUserShowsQuery } from "@services/api/user_api/user_api";
 import { filteredUserShows } from "@utils/shows/filtered_user_shows";
-import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
+import {
+	hideShowsMenuDrawer,
+	toggleShowsMenuDrawer,
+} from "@stores/ui_store/ui_store";
 
 const StyledForm = styled.form`
 	display: flex;
@@ -94,7 +97,7 @@ const MoviesHeaderSearch = () => {
 		if (whichShowsResultsToShow === "tmdb") {
 			dispatch(changeCurrentCategory("search"));
 			dispatch(setLatestSearchQuery(data.movieName));
-			return dispatch(toggleShowsMenuDrawer());
+			return dispatch(hideShowsMenuDrawer());
 		}
 	};
 

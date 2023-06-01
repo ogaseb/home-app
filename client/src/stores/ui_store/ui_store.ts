@@ -14,6 +14,9 @@ export const uiStore = createSlice({
 		toggleShowsMenuDrawer: (state) => {
 			state.showsMenuDrawer = !state.showsMenuDrawer;
 		},
+		hideShowsMenuDrawer: (state) => {
+			state.showsMenuDrawer = false;
+		},
 		showTmdbShowsResults: (state) => {
 			state.whichShowsResultsToShow = "tmdb";
 		},
@@ -41,6 +44,7 @@ export const uiStore = createSlice({
 // Action creators are generated for each case reducer function
 export const {
 	toggleShowsMenuDrawer,
+	hideShowsMenuDrawer,
 	showTmdbShowsResults,
 	showUserShowsResults,
 	showAlert,

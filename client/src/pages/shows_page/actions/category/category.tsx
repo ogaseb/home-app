@@ -7,7 +7,7 @@ import { StyledToggleButtonGroup } from "../styles/toggle_button_group.styled";
 import { StyledToggleButton } from "../styles/toggle_button.styled";
 import { screens } from "@theme/theme";
 import { changeCurrentCategory } from "@stores/shows_store/tmdb_shows/tmdb_shows";
-import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
+import { hideShowsMenuDrawer } from "@stores/ui_store/ui_store";
 
 const StyledTypography = styled(Typography)`
 	&& {
@@ -50,7 +50,7 @@ const MoviesHeaderCategory = () => {
 				dispatch(changeCurrentCategory("on_the_air"));
 				break;
 		}
-		return dispatch(toggleShowsMenuDrawer());
+		return dispatch(hideShowsMenuDrawer());
 	};
 
 	return (

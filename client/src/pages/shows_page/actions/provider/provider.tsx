@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { useMediaQuery } from "react-responsive";
 import {
+	hideShowsMenuDrawer,
 	showTmdbShowsResults,
 	showUserShowsResults,
-	toggleShowsMenuDrawer,
 } from "@stores/ui_store/ui_store";
 import { setSearchShows } from "@stores/shows_store/user_shows/user_shows";
 import { ButtonGroupWrapper } from "../styles/button_group_wrapper.styled";
@@ -40,7 +40,7 @@ const MoviesHeaderProvider = () => {
 					onClick={() => {
 						dispatch(showTmdbShowsResults());
 						dispatch(setSearchShows([]));
-						dispatch(toggleShowsMenuDrawer());
+						dispatch(hideShowsMenuDrawer());
 					}}
 				>
 					TMDB
@@ -50,7 +50,7 @@ const MoviesHeaderProvider = () => {
 					onClick={() => {
 						dispatch(showUserShowsResults());
 						dispatch(setSearchShows([]));
-						dispatch(toggleShowsMenuDrawer());
+						dispatch(hideShowsMenuDrawer());
 					}}
 				>
 					User
