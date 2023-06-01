@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { mediaQuery } from "@theme/theme";
 import posterNotFound from "@assets/poster_not_found.png";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const MoviePosterWrapper = styled.div`
 	display: flex;
@@ -13,18 +14,13 @@ const MoviePosterWrapper = styled.div`
     height: unset; 
 	`}
 `;
-const MoviePosterImg = styled.img`
-	height: 200px;
-
-	${mediaQuery("largeHandset")`
-		height: 200px;
-	`}
-`;
 
 const MoviesListPoster = ({ posterPath }: { posterPath: string | null }) => {
 	return (
 		<MoviePosterWrapper>
-			<MoviePosterImg
+			<LazyLoadImage
+				alt={"poster image"}
+				height={200}
 				src={
 					posterPath
 						? `https://image.tmdb.org/t/p/w500/${posterPath}`

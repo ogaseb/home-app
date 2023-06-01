@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { Typography, Button, TextField } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import {
 	changeCurrentCategory,
 	setLatestSearchQuery,
@@ -11,12 +11,11 @@ import { TFormInput } from "@pages/shows_page/shows_page.types";
 import { mediaQuery } from "@theme/theme";
 import Fuse from "fuse.js";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { setSearchShows } from "@stores/shows_store/user_shows/user_shows";
-import { useMemo, useState } from "react";
-import { Typography } from "@mui/material";
+import { useMemo } from "react";
 import { useGetAllUserShowsQuery } from "@services/api/user_api/user_api";
 import { filteredUserShows } from "@utils/shows/filtered_user_shows";
+import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
 
 const StyledForm = styled.form`
 	display: flex;
@@ -94,7 +93,8 @@ const MoviesHeaderSearch = () => {
 	const onSubmit: SubmitHandler<TFormInput> = async (data) => {
 		if (whichShowsResultsToShow === "tmdb") {
 			dispatch(changeCurrentCategory("search"));
-			return dispatch(setLatestSearchQuery(data.movieName));
+			dispatch(setLatestSearchQuery(data.movieName));
+			return dispatch(toggleShowsMenuDrawer());
 		}
 	};
 

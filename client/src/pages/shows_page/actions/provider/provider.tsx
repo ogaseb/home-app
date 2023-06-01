@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import {
 	showTmdbShowsResults,
 	showUserShowsResults,
+	toggleShowsMenuDrawer,
 } from "@stores/ui_store/ui_store";
 import { setSearchShows } from "@stores/shows_store/user_shows/user_shows";
 import { ButtonGroupWrapper } from "../styles/button_group_wrapper.styled";
@@ -39,6 +40,7 @@ const MoviesHeaderProvider = () => {
 					onClick={() => {
 						dispatch(showTmdbShowsResults());
 						dispatch(setSearchShows([]));
+						dispatch(toggleShowsMenuDrawer());
 					}}
 				>
 					TMDB
@@ -48,6 +50,7 @@ const MoviesHeaderProvider = () => {
 					onClick={() => {
 						dispatch(showUserShowsResults());
 						dispatch(setSearchShows([]));
+						dispatch(toggleShowsMenuDrawer());
 					}}
 				>
 					User

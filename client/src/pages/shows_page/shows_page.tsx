@@ -1,15 +1,15 @@
-import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
-import { changeCurrentCategory } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import { useEffect } from "react";
 import styled from "styled-components";
+import { Drawer, IconButton, Toolbar } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useMediaQuery } from "react-responsive";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
+import { changeCurrentCategory } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import { mediaQuery, screens } from "@theme/theme";
 import { MoviesActions } from "@pages/shows_page/actions/actions";
 import { MoviesList } from "@pages/shows_page/list/list";
 import { MoviesPagination } from "@pages/shows_page/pagination/pagination";
-import { Drawer, IconButton, Toolbar } from "@mui/material";
-import { useMediaQuery } from "react-responsive";
 import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
-import CloseIcon from "@mui/icons-material/Close";
 
 const Wrapper = styled.div`
 	width: 100%;

@@ -10,6 +10,7 @@ import { StyledToggleButton } from "../styles/toggle_button.styled";
 import { Typography } from "@mui/material";
 import styled from "styled-components";
 import { screens } from "@theme/theme";
+import { toggleShowsMenuDrawer } from "@stores/ui_store/ui_store";
 
 const StyledTypography = styled(Typography)`
 	&& {
@@ -42,6 +43,8 @@ const MoviesHeaderMediaType = () => {
 			currentCategory === "upcoming" &&
 				dispatch(changeCurrentCategory("airing_today"));
 		}
+
+		return dispatch(toggleShowsMenuDrawer());
 	};
 
 	const isMobile = useMediaQuery({

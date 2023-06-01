@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { setCurrentPage } from "@stores/shows_store/tmdb_shows/tmdb_shows";
-import styled from "styled-components";
 import { Pagination } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
 
@@ -38,7 +38,10 @@ const MoviesPagination = () => {
 		shows: { totalPages, page },
 	} = useAppSelector((state) => state.showsStore.tmdbShows);
 
-	const handlePageChange = (_event: any, page: number) => {
+	const handlePageChange = (
+		_event: React.ChangeEvent<unknown>,
+		page: number,
+	) => {
 		dispatch(setCurrentPage(page));
 	};
 

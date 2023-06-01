@@ -18,7 +18,7 @@ export class AuthController {
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
-    // log the ticket payload in the console to see what we have
+
     const { email, name, given_name } = ticket.getPayload();
 
     const data = await this.authService.login({
