@@ -9,11 +9,16 @@ import { MoviesListRating } from "./rating/rating";
 import { MoviesListPoster } from "./poster/poster";
 import { useMediaQuery } from "react-responsive";
 import { useGetAllUserShowsQuery } from "@services/api/user_api/user_api";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { filteredUserShows } from "@utils/shows/filtered_user_shows";
 import { mergeShowsFromUserToTmdb } from "@utils/shows/merge_shows_from_user_to_tmdb";
 import { TShowsResultUser } from "@stores/shows_store/user_shows/user_shows.types";
 import { useTMDBQueries } from "@hooks/tmdb_queries";
+import { Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, ListItem, ListItemButton, ListItemText, Modal, Typography } from "@mui/material";
+import { useVideos } from "@hooks/youtube_videos";
+import YouTube from "react-youtube";
+import CloseIcon from "@mui/icons-material/Close";
+import { TrailerDialog } from "./trailer/trailer";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -22,6 +27,7 @@ const MoviesListWrapper = styled.div`
 	flex-direction: column;
 	overflow: auto;
 	height: calc(100vh - ${(props) => props.theme.appBarHeight} - 68px);
+	scroll-behavior: smooth;
 
 	& > div:nth-child(even) {
 		background-color: #171717;
@@ -40,7 +46,7 @@ const MovieListItem = styled.div`
 
 	${mediaQuery("largeHandset")`
 		flex-wrap: wrap;
-    height: unset; 
+        height: unset; 
 	`}
 `;
 
@@ -101,7 +107,7 @@ const MoviesList = () => {
 		currentMediaType,
 		shows: { results: tmdbShows },
 	} = useAppSelector((state) => state.showsStore.tmdbShows);
-	const { whichShowsResultsToShow } = useAppSelector((state) => state.uiStore);
+	const { whichShowsResultsToShow, whichShowsUserToShow } = useAppSelector((state) => state.uiStore);
 	const { data: shows = [] } = useGetAllUserShowsQuery();
 
 	const userShows = useMemo(() => {
@@ -111,6 +117,14 @@ const MoviesList = () => {
 	const mergedShowsFromUserToTmdb = useMemo(() => {
 		return mergeShowsFromUserToTmdb(userShows, tmdbShows);
 	}, [userShows, tmdbShows]);
+
+	const userShowsWatched = useMemo(() => {
+		return userShows.filter((show)=> show.isWatched)
+	}, [userShows]);
+
+	const userShowsAdded = useMemo(() => {
+		return userShows.filter((show)=> show.isAdded && !show.isWatched)
+	}, [userShows]);
 
 	const { loading: tmdbLoading } = useAppSelector(
 		(state) => state.showsStore.tmdbShows,
@@ -123,6 +137,14 @@ const MoviesList = () => {
 	let moviesList: TShowsResultUser[] = [];
 	if (whichShowsResultsToShow === "user") {
 		moviesList = userShows;
+	}
+
+	if (whichShowsUserToShow === "watched") {
+		moviesList = userShowsWatched;
+	}
+
+	if (whichShowsUserToShow === "added") {
+		moviesList = userShowsAdded;
 	}
 
 	if (whichShowsResultsToShow === "tmdb") {
@@ -141,17 +163,24 @@ const MoviesList = () => {
 		return <MoviesListError />;
 	}
 
-	if (whichShowsResultsToShow === "user" && !userShows.length) {
+	if (whichShowsResultsToShow === "user" && !moviesList.length) {
 		return <MoviesListError />;
 	}
 
+	const [videoTitle, setVideoTitle] = useState(null);
+
+	const onClick = (videoTitle: string) => {
+		setVideoTitle(videoTitle)
+	}
+	
 	return (
-		<MoviesListWrapper>
+		<MoviesListWrapper id="moviesListWrapper">
 			{(isSuccessfulCategoryQuery ||
 				isSuccessfulSearchQuery ||
 				isSuccessfulRecommendedOrSimilarQuery) &&
 			moviesList.length ? (
 				<>
+					<TrailerDialog videoTitle={videoTitle} />
 					<MoviesListHeader />
 					{moviesList.map((show: TShowsResultUser, index) => {
 						const {
@@ -169,7 +198,7 @@ const MoviesList = () => {
 								<MovieTextWrapper>
 									<MovieTitle>{title}</MovieTitle>
 									<MovieOriginalTitle>
-										{originalTitle} | type: {mediaType}
+										{originalTitle} | type: {mediaType} | YT trailer: <Button onClick={()=>onClick(`${title} trailer`)}> YT search</Button>
 									</MovieOriginalTitle>
 									<MovieDescription>{overview}</MovieDescription>
 								</MovieTextWrapper>

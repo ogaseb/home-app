@@ -6,12 +6,12 @@ import { ShowsModule } from "./shows/shows.module";
 import { AuthModule } from "./auth/auth.module";
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
-    PrismaModule,
-    UsersModule,
-    ShowsModule,
-    AuthModule,
-  ],
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+        PrismaModule,
+        UsersModule,
+        ShowsModule,
+        AuthModule,
+    ],
 })
 export class AppModule {}

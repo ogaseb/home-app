@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import jwt from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { userApi } from "@services/api/user_api/user_api";
+import "core-js/stable/atob";
 
 type TUserStoreState = {
 	user: {
@@ -24,7 +25,7 @@ export const authStore = createSlice({
 	initialState,
 	reducers: {
 		signIn: (state, action: PayloadAction<string>) => {
-			const { name, email, nickname, id } = jwt(action.payload) as any;
+			const { name, email, nickname, id } = jwtDecode<{name: string, email: string, nickname: string, id: number}>(action.payload);
 			state.user = { name, email, nickname, id };
 			state.accessToken = action.payload;
 		},
@@ -37,7 +38,7 @@ export const authStore = createSlice({
 		builder.addMatcher(
 			userApi.endpoints.userLogin.matchFulfilled,
 			(state, { payload }) => {
-				const { name, email, nickname, id } = jwt(payload.access_token) as any;
+				const { name, email, nickname, id } = jwtDecode<{name: string, email: string, nickname: string, id: number}>(payload.access_token);
 				state.user = { name, email, nickname, id };
 				state.accessToken = payload.access_token;
 				localStorage.setItem("user", JSON.stringify(payload.access_token));

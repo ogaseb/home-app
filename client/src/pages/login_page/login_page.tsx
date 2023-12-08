@@ -22,7 +22,6 @@ const LoginPage = () => {
 				<GoogleLogin
 					onSuccess={async (credentialResponse) => {
 						try {
-							console.log(credentialResponse);
 							await userLogin(credentialResponse);
 							navigate("/");
 						} catch (e) {

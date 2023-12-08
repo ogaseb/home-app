@@ -4,6 +4,7 @@ import { TUiStoreState } from "./ui_store.types";
 const initialState: TUiStoreState = {
 	showsMenuDrawer: false,
 	whichShowsResultsToShow: "tmdb",
+	whichShowsUserToShow: null,
 	alertMessageQueue: [],
 };
 
@@ -22,6 +23,15 @@ export const uiStore = createSlice({
 		},
 		showUserShowsResults: (state) => {
 			state.whichShowsResultsToShow = "user";
+		},
+		showUserAddedResults: (state) => {
+			state.whichShowsUserToShow = "added";
+		},
+		showUserWatchedResults: (state) => {
+			state.whichShowsUserToShow = "watched";
+		},
+		showUserBothResults: (state) => {
+			state.whichShowsUserToShow = null;
 		},
 		showAlert: (
 			state,
@@ -49,6 +59,9 @@ export const {
 	showUserShowsResults,
 	showAlert,
 	removeAlertFromQueue,
+	showUserAddedResults,
+	showUserWatchedResults,
+	showUserBothResults
 } = uiStore.actions;
 
 export default uiStore.reducer;

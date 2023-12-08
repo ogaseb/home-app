@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import { setCurrentPage } from "@stores/shows_store/tmdb_shows/tmdb_shows";
 import { Pagination } from "@mui/material";
 import { mediaQuery } from "@theme/theme";
+import { useRef } from "react";
 
 const PaginationWrapper = styled.div`
 	margin-top: 16px;
@@ -43,6 +44,7 @@ const MoviesPagination = () => {
 		page: number,
 	) => {
 		dispatch(setCurrentPage(page));
+		document.getElementById("moviesListWrapper").scrollTo({top: 0})
 	};
 
 	return (

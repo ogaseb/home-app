@@ -29,7 +29,7 @@ const ButtonWrapper = styled.div`
 		}
 
 		${mediaQuery("largeHandset")`
-    margin: 12px 0 0 0;
+        margin: 12px 0 0 0;
 		flex-basis: 100%;
 		flex-direction: row;
 		line-height: 10px;

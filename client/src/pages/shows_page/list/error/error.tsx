@@ -31,7 +31,7 @@ const ErrorText = styled.div`
 	margin-bottom: 8px;
 
 	${mediaQuery("largeHandset")`
-    font-size: 24px;
+        font-size: 24px;
 	`}
 `;
 

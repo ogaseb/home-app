@@ -8,6 +8,7 @@ import {
 } from "@nestjs/common";
 import { ShowsService } from "./shows.service";
 import { AuthGuard } from "src/auth/auth.guard";
+import yts = require("yt-search");
 
 @Controller({ path: "shows" })
 export class ShowsController {
@@ -40,6 +41,19 @@ export class ShowsController {
     const data = await this.showsService.watchedShow(show, req.user.id);
     return {
       show: data,
+      message: "success",
+    };
+  }
+
+  @UseGuards(AuthGuard)
+  @Post("/youtube")
+  async getYutubeSearch(@Body("show") show, @Request() req: any): Promise<any> {
+    if (!show.title) {
+      return;
+    }
+    const data = await yts(show.title);
+    return {
+      data,
       message: "success",
     };
   }

@@ -27,6 +27,9 @@ export const userApi = createApi({
 				method: "POST",
 				body: { token: credentialResponse.credential },
 			}),
+			transformErrorResponse: (value) => {
+				console.log(value)
+			}
 		}),
 		getAllUserShows: builder.query<TShowsResultUser[], void>({
 			query: () => "shows/all",
@@ -51,6 +54,19 @@ export const userApi = createApi({
 			}),
 			invalidatesTags: ["UserShows"],
 		}),
+    getYoutubeSearch: builder.mutation<any, string>({
+			query: ( search ) => ({
+				url: "shows/youtube",
+				method: "POST",
+				body: { show: { title: search} },
+			}),
+      transformResponse: (response: { data: { videos: Record<string, never>[]}}) => {
+        if(!response){
+          return []
+        }
+        return response.data.videos
+      }
+		}),
 	}),
 });
 
@@ -59,4 +75,5 @@ export const {
 	useToggleAddUserShowMutation,
 	useToggleWatchedUserShowMutation,
 	useUserLoginMutation,
+  useGetYoutubeSearchMutation
 } = userApi;

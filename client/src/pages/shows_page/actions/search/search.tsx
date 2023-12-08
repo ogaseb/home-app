@@ -28,8 +28,8 @@ const StyledForm = styled.form`
 
 	${mediaQuery("largeHandset")`
 		& > div {
-	    flex: 100$;
-	  }
+	        flex: 100$;
+	    }
 	`}
 `;
 
@@ -81,7 +81,7 @@ const MoviesHeaderSearch = () => {
 		})
 		.required();
 
-	const { control, handleSubmit, watch } = useForm<TFormInput>({
+	const { control, handleSubmit, watch } = useForm({
 		defaultValues: {
 			movieName: "",
 		},

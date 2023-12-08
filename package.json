@@ -1,27 +1,28 @@
 {
-  "name": "home-app",
-  "version": "0.0.1",
-  "description": "home app for tracking stuff",
-  "repository": "https://github.com/ProPanek/home-app.git",
-  "author": "ProPanek <oga.seb@gmail.com>",
-  "license": "MIT",
-  "scripts": {
-    "server": "npm run start:dev --prefix server",
-    "client": "PORT=3000 npm start --prefix client",
-    "build": "cd client && yarn install && yarn build && cd ../server && yarn build",
-    "start": "concurrently \"yarn server\" \"yarn client\"",
-    "_prepare": "husky install"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
+    "name": "home-app",
+    "version": "0.0.1",
+    "description": "home app for tracking stuff",
+    "repository": "https://github.com/ProPanek/home-app.git",
+    "author": "ProPanek <oga.seb@gmail.com>",
+    "proxy":"https://www.youtube.com",
+    "license": "MIT",
+    "scripts": {
+        "server": "npm run start:dev --prefix server",
+        "client": "PORT=3000 npm start --prefix client",
+        "build": "cd client && yarn install && yarn build && cd ../server && yarn build",
+        "start": "concurrently \"yarn server\" \"yarn client\"",
+        "_prepare": "husky install"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "dependencies": {
+        "concurrently": "^8.0.1"
+    },
+    "devDependencies": {
+        "husky": "^8.0.0",
+        "lint-staged": "^13.2.2"
     }
-  },
-  "dependencies": {
-    "concurrently": "^8.0.1"
-  },
-  "devDependencies": {
-    "husky": "^8.0.0",
-    "lint-staged": "^13.2.2"
-  }
 }
