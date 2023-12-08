@@ -82,7 +82,6 @@ const TrailerDialog = () => {
 	const [videoId, setVideoId] = useState(null);
 
 	useEffect(() => {
-    console.log(showTrailerDialog)
     if (showTrailerDialog.title) {
       search(showTrailerDialog.title);
       setOpenModal(showTrailerDialog.visible);

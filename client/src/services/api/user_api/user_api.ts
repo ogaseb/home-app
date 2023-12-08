@@ -27,9 +27,6 @@ export const userApi = createApi({
 				method: "POST",
 				body: { token: credential },
 			}),
-			transformErrorResponse: (value) => {
-				console.log(value)
-			}
 		}),
 		getAllUserShows: builder.query<TShowsResultUser[], void>({
 			query: () => "shows/all",
@@ -61,7 +58,6 @@ export const userApi = createApi({
 				body: { show: { title: search } },
 			}),
       transformResponse: ({ data : { videos }}) => {
-        console.log(videos)
         if(!videos && !videos.length){
           return []
         }

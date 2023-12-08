@@ -28,7 +28,7 @@ const LoginPage = () => {
 							//empty
 						}
 					}}
-					onError={() => console.log("Login Failed")}
+					onError={() => {throw new Error("error logging with google credentials")}}
 				/>
 			</GoogleOAuthProvider>
 		</Wrapper>

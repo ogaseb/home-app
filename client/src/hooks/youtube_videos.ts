@@ -9,7 +9,6 @@ export const useVideos = (
 	const [videos, setVideos] = useState([]);
 
   const search = async (defaultSearchTerm) => {
-    console.log(defaultSearchTerm)
     const { data } = await getYoutubeSearch(defaultSearchTerm) as never;
     if (Array.isArray(data)){
       setVideos(data)
