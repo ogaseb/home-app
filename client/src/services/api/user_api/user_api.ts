@@ -21,11 +21,11 @@ export const userApi = createApi({
 	baseQuery: baseQuery,
 	tagTypes: ["UserShows"],
 	endpoints: (builder) => ({
-		userLogin: builder.mutation<any, any>({
-			query: (credentialResponse) => ({
+		userLogin: builder.mutation<{ access_token: string}, string>({
+			query: (credential) => ({
 				url: "auth/login",
 				method: "POST",
-				body: { token: credentialResponse.credential },
+				body: { token: credential },
 			}),
 			transformErrorResponse: (value) => {
 				console.log(value)
@@ -54,17 +54,18 @@ export const userApi = createApi({
 			}),
 			invalidatesTags: ["UserShows"],
 		}),
-    getYoutubeSearch: builder.mutation<any, string>({
+    getYoutubeSearch: builder.mutation< { data: { videos: Record<string, never>[]}}, string>({
 			query: ( search ) => ({
 				url: "shows/youtube",
 				method: "POST",
-				body: { show: { title: search} },
+				body: { show: { title: search } },
 			}),
-      transformResponse: (response: { data: { videos: Record<string, never>[]}}) => {
-        if(!response){
+      transformResponse: ({ data : { videos }}) => {
+        console.log(videos)
+        if(!videos && !videos.length){
           return []
         }
-        return response.data.videos
+        return videos
       }
 		}),
 	}),

@@ -3,6 +3,7 @@ import { TUiStoreState } from "./ui_store.types";
 
 const initialState: TUiStoreState = {
 	showsMenuDrawer: false,
+  showTrailerDialog: { title: "", visible: false},
 	whichShowsResultsToShow: "tmdb",
 	whichShowsUserToShow: null,
 	alertMessageQueue: [],
@@ -14,6 +15,9 @@ export const uiStore = createSlice({
 	reducers: {
 		toggleShowsMenuDrawer: (state) => {
 			state.showsMenuDrawer = !state.showsMenuDrawer;
+		},
+    setTrailerDialog: (state, action) => {
+			state.showTrailerDialog = action.payload;
 		},
 		hideShowsMenuDrawer: (state) => {
 			state.showsMenuDrawer = false;
@@ -61,7 +65,8 @@ export const {
 	removeAlertFromQueue,
 	showUserAddedResults,
 	showUserWatchedResults,
-	showUserBothResults
+	showUserBothResults,
+  setTrailerDialog
 } = uiStore.actions;
 
 export default uiStore.reducer;

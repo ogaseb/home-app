@@ -1,5 +1,6 @@
 type TUiStoreState = {
 	showsMenuDrawer: boolean;
+  showTrailerDialog: { title: string, visible: boolean };
 	whichShowsResultsToShow: "tmdb" | "user";
 	whichShowsUserToShow: "added" | "watched" | null;
 	alertMessageQueue: {

@@ -14,6 +14,8 @@ import { useVideos } from "@hooks/youtube_videos";
 import YouTube from "react-youtube";
 import CloseIcon from "@mui/icons-material/Close";
 import { ProgressSpinner } from "@components/progress/progress";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
+import { setTrailerDialog } from "@stores/ui_store/ui_store";
 
 const StyledDialog = styled(Dialog)`
 	&& {
@@ -72,22 +74,25 @@ const StyledDialogTitle = styled(DialogTitle)`
 
 
 
-const TrailerDialog = ({ videoTitle }) => {
+const TrailerDialog = () => {
+	const dispatch = useAppDispatch();
+	const { showTrailerDialog } = useAppSelector((state) => state.uiStore);
 	const [videos, search, isLoading] = useVideos();
 	const [openModal, setOpenModal] = useState(false);
 	const [videoId, setVideoId] = useState(null);
 
 	useEffect(() => {
-    if (videoTitle) {
-      search(videoTitle);
-      setOpenModal(true);
+    console.log(showTrailerDialog)
+    if (showTrailerDialog.title) {
+      search(showTrailerDialog.title);
+      setOpenModal(showTrailerDialog.visible);
     }
 		
     return () => {
       setOpenModal(false);
       setVideoId(null)
     }
-	}, [videoTitle]);
+	}, [showTrailerDialog]);
 
 	const handleClose = (event, reason) => {
 		if (reason && reason === "backdropClick") {
@@ -97,6 +102,7 @@ const TrailerDialog = ({ videoTitle }) => {
 		if (reason && reason === "backdropClick" && !videoId) {
 			setOpenModal(false);
 		}
+    dispatch(setTrailerDialog({title: "", visible: false}))
 	};
 
 	const onVideoClick = (value: string) => {
@@ -115,6 +121,7 @@ const TrailerDialog = ({ videoTitle }) => {
               onClick={() => {
                 setOpenModal(false);
                 setVideoId(null);
+                dispatch(setTrailerDialog({title: "", visible: false}))
               }}
               aria-label="close"
             >

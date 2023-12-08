@@ -16,7 +16,7 @@ export class ShowsController {
 
   @UseGuards(AuthGuard)
   @Get("/all")
-  async login(): Promise<any> {
+  async login(): Promise<{ shows: unknown; message: string }> {
     const data = await this.showsService.getAllShows();
     return {
       shows: data,
@@ -26,8 +26,10 @@ export class ShowsController {
 
   @UseGuards(AuthGuard)
   @Post("/add")
-  async add(@Body("show") show, @Request() req: any): Promise<any> {
-    console.log(show);
+  async add(
+    @Body("show") show,
+    @Request() req: { user: { id: number } },
+  ): Promise<{ show: unknown; message: string }> {
     const data = await this.showsService.addShow(show, req.user.id);
     return {
       show: data,
@@ -37,7 +39,10 @@ export class ShowsController {
 
   @UseGuards(AuthGuard)
   @Post("/watched")
-  async watched(@Body("show") show, @Request() req: any): Promise<any> {
+  async watched(
+    @Body("show") show,
+    @Request() req: { user: { id: number } },
+  ): Promise<{ show: unknown; message: string }> {
     const data = await this.showsService.watchedShow(show, req.user.id);
     return {
       show: data,
@@ -47,7 +52,9 @@ export class ShowsController {
 
   @UseGuards(AuthGuard)
   @Post("/youtube")
-  async getYutubeSearch(@Body("show") show, @Request() req: any): Promise<any> {
+  async getYutubeSearch(
+    @Body("show") show,
+  ): Promise<{ data: unknown; message: string }> {
     if (!show.title) {
       return;
     }

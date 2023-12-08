@@ -20,9 +20,9 @@ const LoginPage = () => {
 				clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
 			>
 				<GoogleLogin
-					onSuccess={async (credentialResponse) => {
+					onSuccess={async ({credential}) => {
 						try {
-							await userLogin(credentialResponse);
+							await userLogin(credential);
 							navigate("/");
 						} catch (e) {
 							//empty

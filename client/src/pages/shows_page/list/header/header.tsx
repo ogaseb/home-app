@@ -36,6 +36,10 @@ const MovieTextWrapper = styled(MainWrapper)`
 	flex: 5;
 `;
 
+const MovieTrailerWrapper = styled(MainWrapper)`
+	flex: 1;
+`;
+
 const MovieRatingWrapper = styled(MainWrapper)`
 	flex: 1;
 `;
@@ -53,6 +57,7 @@ const MoviesListHeader = () => {
 		<MovieListItemHeader>
 			<MoviePosterWrapper>Poster</MoviePosterWrapper>
 			<MovieTextWrapper>Overview</MovieTextWrapper>
+      <MovieTrailerWrapper>Trailer</MovieTrailerWrapper>
 			<MovieRatingWrapper>Rating</MovieRatingWrapper>
 			<MovieReleaseDate>Release Date</MovieReleaseDate>
 			<ButtonWrapper>Action</ButtonWrapper>

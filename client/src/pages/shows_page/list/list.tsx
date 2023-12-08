@@ -1,4 +1,4 @@
-import { useAppSelector } from "@hooks/redux_hooks";
+import { useAppDispatch, useAppSelector } from "@hooks/redux_hooks";
 import styled from "styled-components";
 import { mediaQuery, screens } from "@theme/theme";
 import { ProgressSpinner } from "@components/progress/progress";
@@ -9,16 +9,14 @@ import { MoviesListRating } from "./rating/rating";
 import { MoviesListPoster } from "./poster/poster";
 import { useMediaQuery } from "react-responsive";
 import { useGetAllUserShowsQuery } from "@services/api/user_api/user_api";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { filteredUserShows } from "@utils/shows/filtered_user_shows";
 import { mergeShowsFromUserToTmdb } from "@utils/shows/merge_shows_from_user_to_tmdb";
 import { TShowsResultUser } from "@stores/shows_store/user_shows/user_shows.types";
 import { useTMDBQueries } from "@hooks/tmdb_queries";
-import { Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, ListItem, ListItemButton, ListItemText, Modal, Typography } from "@mui/material";
-import { useVideos } from "@hooks/youtube_videos";
-import YouTube from "react-youtube";
-import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "@mui/material";
 import { TrailerDialog } from "./trailer/trailer";
+import { setTrailerDialog } from "@stores/ui_store/ui_store";
 
 const MoviesListWrapper = styled.div`
 	position: relative;
@@ -70,6 +68,19 @@ const MovieTitle = styled.div`
 `;
 
 const MovieReleaseDate = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+
+	${mediaQuery("largeHandset")`
+		flex: 60%;
+		margin-top: 8px;
+		font-size: 12px;
+	`}
+`;
+
+const MovieTrailer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -167,10 +178,9 @@ const MoviesList = () => {
 		return <MoviesListError />;
 	}
 
-	const [videoTitle, setVideoTitle] = useState(null);
-
+	const dispatch = useAppDispatch();
 	const onClick = (videoTitle: string) => {
-		setVideoTitle(videoTitle)
+		dispatch(setTrailerDialog({title: videoTitle, visible: true}))
 	}
 	
 	return (
@@ -180,7 +190,7 @@ const MoviesList = () => {
 				isSuccessfulRecommendedOrSimilarQuery) &&
 			moviesList.length ? (
 				<>
-					<TrailerDialog videoTitle={videoTitle} />
+					<TrailerDialog />
 					<MoviesListHeader />
 					{moviesList.map((show: TShowsResultUser, index) => {
 						const {
@@ -198,10 +208,13 @@ const MoviesList = () => {
 								<MovieTextWrapper>
 									<MovieTitle>{title}</MovieTitle>
 									<MovieOriginalTitle>
-										{originalTitle} | type: {mediaType} | YT trailer: <Button onClick={()=>onClick(`${title} trailer`)}> YT search</Button>
+										{originalTitle} | type: {mediaType}
 									</MovieOriginalTitle>
 									<MovieDescription>{overview}</MovieDescription>
 								</MovieTextWrapper>
+                <MovieTrailer>
+                  <Button size="small" variant="outlined" onClick={()=>onClick(`${title} trailer`)}>TRAILER</Button>
+								</MovieTrailer>
 								<MoviesListRating voteAverage={voteAverage} />
 								<MovieReleaseDate>
 									{isMobile ? `Release date: ${releaseDate}` : releaseDate}

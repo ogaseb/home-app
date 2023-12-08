@@ -11,7 +11,19 @@ export class ShowsService {
     return shows;
   }
 
-  async addShow(params: any, userId: number): Promise<Shows> {
+  async addShow(
+    params: {
+      title: string;
+      originalTitle: string;
+      showId: number;
+      posterPath: string;
+      voteAverage: number;
+      releaseDate: string;
+      overview: string;
+      mediaType: string;
+    },
+    userId: number,
+  ): Promise<Shows> {
     const {
       title,
       originalTitle,
@@ -52,7 +64,19 @@ export class ShowsService {
     }
   }
 
-  async watchedShow(params: any, userId: number): Promise<Shows> {
+  async watchedShow(
+    params: {
+      title: string;
+      originalTitle: string;
+      showId: number;
+      posterPath: string;
+      voteAverage: number;
+      releaseDate: string;
+      overview: string;
+      mediaType: string;
+    },
+    userId: number,
+  ): Promise<Shows> {
     const {
       title,
       originalTitle,

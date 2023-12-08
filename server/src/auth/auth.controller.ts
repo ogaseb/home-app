@@ -12,8 +12,9 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post("/login")
-  async login(@Body("token") token): Promise<any> {
-    console.log(token);
+  async login(
+    @Body("token") token,
+  ): Promise<{ access_token: string; message: string }> {
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
