@@ -103,8 +103,6 @@ const TrailerDialog = ({ videoTitle }) => {
 		setVideoId(value);
 	};
 
-  console.log(videos, videoTitle, videoId, openModal)
-
 	return (
 		<>
 			<StyledDialog open={openModal} onClose={handleClose} fullScreen={videoId}>
